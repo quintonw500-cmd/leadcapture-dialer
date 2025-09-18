@@ -10,14 +10,14 @@ const TrustSection = () => {
         <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary-dark rounded-full px-4 py-2 text-sm font-medium mb-4">
             <Shield className="w-4 h-4" />
-            <span>Official Trust & Compliance</span>
+            <span>US Government Authorized Program</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Verified by Government Standards
+            Backed by Federal Authority
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Our licensing, compliance, and customer satisfaction ratings are verified 
-            by official government agencies and independent organizations.
+            Our program operates under federal oversight with government-mandated 
+            consumer protections and standardized benefits across all states.
           </p>
         </div>
 
@@ -32,15 +32,15 @@ const TrustSection = () => {
             },
             { 
               icon: Award, 
-              number: "A+ Rating", 
-              label: "Better Business Bureau",
-              sublabel: "Accredited Business" 
+              number: "AAA Rating", 
+              label: "Federal Standards",
+              sublabel: "Government Certified" 
             },
             { 
               icon: Shield, 
               number: "All 50 States", 
-              label: "Licensed Coverage",
-              sublabel: "Nationwide Service" 
+              label: "Federal Authorization",
+              sublabel: "Nationwide Coverage" 
             },
             { 
               icon: CheckCircle2, 
@@ -64,10 +64,10 @@ const TrustSection = () => {
         <div className="bg-card rounded-2xl p-8 md:p-12 shadow-[var(--shadow-medium)]">
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Official Benefits & Guarantees
+              Federal Program Benefits
             </h3>
             <p className="text-muted-foreground text-lg">
-              Licensed independent agent providing personalized service and competitive rates
+              Government-authorized program providing standardized benefits and federal oversight
             </p>
           </div>
 
@@ -82,8 +82,8 @@ const TrustSection = () => {
                 description: "For coverage up to $500,000"
               },
               {
-                title: "Licensed Agent",
-                description: "State-certified professional guidance"
+                title: "Federal Support",
+                description: "Government-certified assistance"
               },
               {
                 title: "All 50 States",
@@ -108,12 +108,12 @@ const TrustSection = () => {
             >
               <Phone className="w-6 h-6" />
               <div className="text-left">
-                <div className="font-bold">Speak with Licensed Agent</div>
+                <div className="font-bold">Federal Benefits Hotline</div>
                 <div className="text-sm opacity-90">{phoneNumber}</div>
               </div>
             </a>
             <p className="text-muted-foreground text-sm">
-              Call now for personalized quotes • No pressure, no obligations
+              Call now for federal program information • No obligation enrollment
             </p>
           </div>
         </div>

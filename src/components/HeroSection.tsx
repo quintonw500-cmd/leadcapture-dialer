@@ -13,12 +13,12 @@ const HeroSection = () => {
             <div className="space-y-4">
               <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-sm font-medium">
                 <Shield className="w-4 h-4" />
-                <span>Licensed Insurance Professional</span>
+                <span>Official Federal Life Insurance Program</span>
               </div>
               
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Secure Your Family's 
-                <span className="block text-primary">Financial Future</span>
+                Federal Life Insurance 
+                <span className="block text-primary">Protection Program</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-white/90 font-medium">
@@ -26,8 +26,8 @@ const HeroSection = () => {
               </p>
               
               <p className="text-lg text-white/80 max-w-md">
-                Licensed independent agent offering comprehensive life insurance solutions. 
-                Get instant quotes with no medical exam required for most applicants.
+                Government-backed life insurance program providing comprehensive coverage solutions. 
+                Get instant federal quotes with streamlined approval process.
               </p>
             </div>
 
@@ -36,7 +36,7 @@ const HeroSection = () => {
               {[
                 { icon: CheckCircle, text: "Instant Approval Available" },
                 { icon: Clock, text: "No Medical Exam Required" },
-                { icon: Shield, text: "Licensed Professional" },
+                { icon: Shield, text: "Government Backed" },
                 { icon: Users, text: "All 50 States Coverage" }
               ].map((benefit, index) => (
                 <div key={index} className="flex items-center space-x-3">
@@ -77,7 +77,7 @@ const HeroSection = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-[var(--shadow-large)]">
               <img 
                 src={heroFamily} 
-                alt="Happy family protected by life insurance coverage"
+                alt="American families protected by federal life insurance program"
                 className="w-full h-auto object-cover"
               />
               
