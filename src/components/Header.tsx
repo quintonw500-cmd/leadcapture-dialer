@@ -11,19 +11,19 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <img 
               src={shieldIcon} 
-              alt="US Government Life Insurance Seal" 
+              alt="Life Insurance Shield" 
               className="w-10 h-10"
             />
             <div>
-              <h1 className="text-xl font-bold text-primary-dark">US Life Help</h1>
-              <p className="text-xs text-muted-foreground">Federal Life Insurance Program</p>
+              <h1 className="text-xl font-bold text-primary-dark">SecureLife</h1>
+              <p className="text-xs text-muted-foreground">Licensed Insurance Agent</p>
             </div>
           </div>
           
           <div className="hidden md:flex items-center space-x-6">
             <div className="text-right">
-              <p className="text-sm font-medium text-foreground">Official Government Program</p>
-              <p className="text-xs text-muted-foreground">Federal Benefits Hotline Available</p>
+              <p className="text-sm font-medium text-foreground">Call Now for Instant Quote</p>
+              <p className="text-xs text-muted-foreground">Licensed Professional Available</p>
             </div>
             <a 
               href={`tel:${phoneNumber}`}
