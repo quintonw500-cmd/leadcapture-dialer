@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Plus, FileText, Clock, CheckCircle } from "lucide-react";
-import { supabase, isSupabaseConfigured } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 
 interface BlogPost {
   id: string;
@@ -14,9 +14,11 @@ interface BlogPost {
   title: string;
   content: string;
   suggested_titles: string;
-  status: 'draft' | 'published' | 'archived';
+  status: string;
   word_count: number;
   created_at: string;
+  published_at?: string;
+  updated_at: string;
 }
 
 const BlogAdmin = () => {
@@ -33,12 +35,6 @@ const BlogAdmin = () => {
 
   const fetchBlogPosts = async () => {
     try {
-      if (!isSupabaseConfigured()) {
-        console.warn('Supabase not configured - using mock data');
-        setBlogPosts([]);
-        return;
-      }
-
       const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
@@ -61,15 +57,6 @@ const BlogAdmin = () => {
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!keyword.trim()) return;
-
-    if (!isSupabaseConfigured()) {
-      toast({
-        title: "Configuration Required",
-        description: "Please configure your Supabase environment variables first",
-        variant: "destructive",
-      });
-      return;
-    }
 
     setIsGenerating(true);
     
@@ -170,25 +157,6 @@ const BlogAdmin = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Generate SEO-optimized blog posts using AI. Enter a keyword to research and create comprehensive articles.
           </p>
-          
-          {!isSupabaseConfigured() && (
-            <div className="max-w-2xl mx-auto p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <h3 className="font-semibold text-yellow-800 mb-2">⚠️ Configuration Required</h3>
-              <p className="text-sm text-yellow-700 mb-3">
-                Your Supabase environment variables are not configured. To use the AI blog generator, you need to:
-              </p>
-              <ol className="text-sm text-yellow-700 text-left space-y-1">
-                <li>1. Go to your Supabase project dashboard</li>
-                <li>2. Navigate to Settings → API</li>
-                <li>3. Copy your Project URL and anon public key</li>
-                <li>4. Create a .env file in your project root with:</li>
-              </ol>
-              <div className="mt-2 p-2 bg-gray-100 rounded text-xs font-mono text-left">
-                VITE_SUPABASE_URL=your_project_url<br/>
-                VITE_SUPABASE_ANON_KEY=your_anon_key
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Generation Form */}
