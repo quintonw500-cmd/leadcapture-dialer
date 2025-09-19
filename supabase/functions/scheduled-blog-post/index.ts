@@ -138,9 +138,14 @@ Structure the article with:
 - Multiple detailed sections (at least 4-5 H2 sections)
 - Each H2 section must contain at least 150 words
 - Include relevant subheadings (H3) where appropriate
-- Add a strong conclusion with a clear call to action
+- Add a strong conclusion with a clear call to action that links to homepage
 - Use proper HTML tags: <h1>, <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
 - IMPORTANT: Include image placeholder comments <!-- IMAGE_PLACEHOLDER_1 -->, <!-- IMAGE_PLACEHOLDER_2 -->, etc. after the introduction and between at least 2 major H2 sections for image insertion
+
+SEO Requirements:
+- Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
+- Add 2-3 internal links back to homepage using anchor text like "get a life insurance quote", "compare life insurance rates", or "speak with our insurance experts"
+- Include a clear call-to-action in the conclusion linking to the homepage
 
 Research content:
 ${summariesText}
