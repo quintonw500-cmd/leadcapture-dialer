@@ -1,5 +1,5 @@
 import { Phone, Mail, Shield, Award } from "lucide-react";
-import quintonHeadshot from "../assets/quinton-headshot.png";
+import quintonHeadshot from "../assets/quinton-headshot-transparent.png";
 
 const AgentSection = () => {
   const phoneNumber = "866-595-7540";
@@ -24,7 +24,7 @@ const AgentSection = () => {
                 <img 
                   src={quintonHeadshot} 
                   alt="Quinton Williams - Licensed Life Insurance Agent"
-                  className="w-64 h-64 object-cover rounded-xl shadow-lg"
+                  className="w-80 h-80 object-contain filter drop-shadow-2xl"
                 />
                 <div className="absolute -bottom-4 -right-4 bg-primary text-white p-3 rounded-full shadow-lg">
                   <Shield className="w-6 h-6" />
