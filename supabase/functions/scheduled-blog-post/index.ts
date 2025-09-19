@@ -231,11 +231,13 @@ const generateTitles = async (keyword: string, openaiApiKey: string): Promise<st
 const readCSVAndGetTitle = async (dayOfYear: number): Promise<string | null> => {
   try {
     // Read the CSV file from the public directory
-    const csvUrl = `https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life_insurance_blog_titles.csv`;
-    const response = await fetch(csvUrl);
+    const csvUrl = `${Deno.env.get('SUPABASE_URL')}/storage/v1/object/public/blog-titles/life_insurance_blog_titles.csv`;
+    let response = await fetch(csvUrl);
     
+    // If storage fails, try to read from a hardcoded CSV data
     if (!response.ok) {
-      // Fallback titles if CSV is not accessible
+      console.log('Storage CSV not available, using fallback CSV data');
+      // Fallback titles cycling every 10 days
       const fallbackTitles = [
         "What Is Life Insurance? Complete Beginner's Guide",
         "Term vs Whole Life Insurance: Which Policy Is Best for You?",
@@ -265,10 +267,41 @@ const readCSVAndGetTitle = async (dayOfYear: number): Promise<string | null> => 
       }
     }
     
-    return null;
+    // Fallback if no matching line found
+    const fallbackTitles = [
+      "What Is Life Insurance? Complete Beginner's Guide",
+      "Term vs Whole Life Insurance: Which Policy Is Best for You?",
+      "How Much Does Life Insurance Really Cost in 2025?",
+      "Life Insurance for New Parents: Protecting Your Family",
+      "Best Life Insurance Options for Seniors Over 60",
+      "How to File a Life Insurance Claim Step-by-Step",
+      "Using Life Insurance in Your Retirement Strategy",
+      "Best Cheap Life Insurance Plans Compared",
+      "The Future of Life Insurance: 2025 Market Outlook",
+      "How to Choose the Right Life Insurance Policy in 2025"
+    ];
+    
+    const titleIndex = (dayOfYear - 1) % fallbackTitles.length;
+    return fallbackTitles[titleIndex];
   } catch (error) {
     console.error('Error reading CSV file:', error);
-    return null;
+    
+    // Ultimate fallback
+    const fallbackTitles = [
+      "What Is Life Insurance? Complete Beginner's Guide",
+      "Term vs Whole Life Insurance: Which Policy Is Best for You?",
+      "How Much Does Life Insurance Really Cost in 2025?",
+      "Life Insurance for New Parents: Protecting Your Family",
+      "Best Life Insurance Options for Seniors Over 60",
+      "How to File a Life Insurance Claim Step-by-Step",
+      "Using Life Insurance in Your Retirement Strategy",
+      "Best Cheap Life Insurance Plans Compared",
+      "The Future of Life Insurance: 2025 Market Outlook",
+      "How to Choose the Right Life Insurance Policy in 2025"
+    ];
+    
+    const titleIndex = (dayOfYear - 1) % fallbackTitles.length;
+    return fallbackTitles[titleIndex];
   }
 };
 

@@ -10,6 +10,7 @@ import Blog from "./pages/Blog";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import BlogAdmin from "./pages/BlogAdmin";
+import BlogScheduler from "./pages/BlogScheduler";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -33,6 +34,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <BlogAdmin />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/blog-scheduler" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <BlogScheduler />
                 </ProtectedRoute>
               } 
             />

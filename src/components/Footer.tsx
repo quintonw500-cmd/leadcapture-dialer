@@ -112,6 +112,12 @@ const Footer = () => {
                   >
                     Admin Login
                   </a>
+                  <a 
+                    href="/blog-scheduler" 
+                    className="block text-primary hover:text-white transition-colors"
+                  >
+                    Blog Scheduler
+                  </a>
                 </div>
               </div>
             </div>
