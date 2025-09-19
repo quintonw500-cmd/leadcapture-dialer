@@ -5,9 +5,9 @@ const AgentSection = () => {
   const phoneNumber = "866-595-7540";
   
   return (
-    <section className="py-16 bg-gradient-to-br from-background to-muted/20">
+    <section className="py-20 bg-gradient-to-br from-background via-muted/30 to-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-primary-dark mb-4">
             Meet Your Licensed Agent
           </h2>
@@ -16,94 +16,106 @@ const AgentSection = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-0">
-            {/* Agent Photo */}
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center p-8">
-              <div className="relative">
+        <div className="max-w-5xl mx-auto">
+          {/* Main Agent Card */}
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-12">
+            <div className="grid lg:grid-cols-5 gap-0">
+              {/* Agent Photo - Takes up more space and better positioning */}
+              <div className="lg:col-span-2 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 flex items-end justify-center relative overflow-hidden min-h-[400px]">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent"></div>
                 <img 
                   src={quintonHeadshot} 
                   alt="Quinton Williams - Licensed Life Insurance Agent"
-                  className="w-80 h-80 object-contain filter drop-shadow-2xl"
+                  className="w-full h-full object-contain object-bottom transform scale-110 filter drop-shadow-2xl relative z-10"
                 />
-                <div className="absolute -bottom-4 -right-4 bg-primary text-white p-3 rounded-full shadow-lg">
-                  <Shield className="w-6 h-6" />
+                {/* Floating credential badge */}
+                <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-sm text-primary px-4 py-2 rounded-full shadow-lg z-20">
+                  <div className="flex items-center space-x-2">
+                    <Shield className="w-4 h-4" />
+                    <span className="text-sm font-semibold">Licensed</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Agent Info - Takes up remaining space */}
+              <div className="lg:col-span-3 p-8 lg:p-12 flex flex-col justify-center">
+                <div className="mb-8">
+                  <h3 className="text-3xl lg:text-4xl font-bold text-primary-dark mb-3">
+                    Quinton Williams
+                  </h3>
+                  <p className="text-xl text-primary font-semibold mb-4">
+                    Licensed Life Insurance Agent
+                  </p>
+                  
+                  <div className="flex items-center space-x-2 text-muted-foreground mb-6">
+                    <Award className="w-5 h-5" />
+                    <span className="font-medium">NPN: 21258890</span>
+                  </div>
+                  
+                  <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                    Licensed in all 50 states with years of experience helping families 
+                    secure their financial future through comprehensive life insurance solutions.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <a 
+                    href={`tel:${phoneNumber}`}
+                    className="flex items-center justify-center lg:justify-start space-x-4 bg-primary text-white py-4 px-8 rounded-2xl hover:bg-primary/90 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] group"
+                  >
+                    <Phone className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <div className="font-bold text-lg">{phoneNumber}</div>
+                      <div className="text-sm opacity-90">Call for Free Consultation</div>
+                    </div>
+                  </a>
+                  
+                  <a 
+                    href="mailto:quintonw500@gmail.com"
+                    className="flex items-center justify-center lg:justify-start space-x-4 border-2 border-primary text-primary py-4 px-8 rounded-2xl hover:bg-primary/5 transition-all duration-300 hover:shadow-lg group"
+                  >
+                    <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <div className="font-bold text-lg">quintonw500@gmail.com</div>
+                      <div className="text-sm opacity-70">Email for Questions</div>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Agent Info */}
-            <div className="p-8 flex flex-col justify-center">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-primary-dark mb-2">
-                  Quinton Williams
-                </h3>
-                <p className="text-lg text-primary font-semibold mb-4">
-                  Licensed Life Insurance Agent
-                </p>
-                
-                <div className="flex items-center space-x-2 text-muted-foreground mb-2">
-                  <Award className="w-4 h-4" />
-                  <span className="text-sm">NPN: 21258890</span>
-                </div>
-                
-                <p className="text-muted-foreground mb-6">
-                  Licensed in all 50 states with years of experience helping families 
-                  secure their financial future through comprehensive life insurance solutions.
-                </p>
+          {/* Trust Indicators */}
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 text-center group">
+              <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Shield className="w-10 h-10 text-primary" />
               </div>
-
-              <div className="space-y-4">
-                <a 
-                  href={`tel:${phoneNumber}`}
-                  className="flex items-center space-x-3 bg-primary text-white py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors"
-                >
-                  <Phone className="w-5 h-5" />
-                  <div>
-                    <div className="font-semibold">{phoneNumber}</div>
-                    <div className="text-xs opacity-90">Call for Free Consultation</div>
-                  </div>
-                </a>
-                
-                <a 
-                  href="mailto:quintonw500@gmail.com"
-                  className="flex items-center space-x-3 border border-primary text-primary py-3 px-6 rounded-xl hover:bg-primary/5 transition-colors"
-                >
-                  <Mail className="w-5 h-5" />
-                  <div>
-                    <div className="font-semibold">quintonw500@gmail.com</div>
-                    <div className="text-xs opacity-70">Email for Questions</div>
-                  </div>
-                </a>
-              </div>
+              <h4 className="font-bold text-xl text-primary-dark mb-3">Fully Licensed</h4>
+              <p className="text-muted-foreground leading-relaxed">
+                Licensed professional in all 50 states with proper credentials and ongoing education
+              </p>
             </div>
-          </div>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="grid md:grid-cols-3 gap-6 mt-12 text-center">
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h4 className="font-bold text-primary-dark mb-2">Fully Licensed</h4>
-            <p className="text-sm text-muted-foreground">
-              Licensed professional in all 50 states with proper credentials
-            </p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <Award className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h4 className="font-bold text-primary-dark mb-2">Experienced</h4>
-            <p className="text-sm text-muted-foreground">
-              Years of experience helping families find the right coverage
-            </p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <Phone className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h4 className="font-bold text-primary-dark mb-2">Always Available</h4>
-            <p className="text-sm text-muted-foreground">
-              Direct access to your agent for questions and support
-            </p>
+            
+            <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 text-center group">
+              <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Award className="w-10 h-10 text-primary" />
+              </div>
+              <h4 className="font-bold text-xl text-primary-dark mb-3">Experienced</h4>
+              <p className="text-muted-foreground leading-relaxed">
+                Years of experience helping families find the right coverage for their unique situations
+              </p>
+            </div>
+            
+            <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 text-center group">
+              <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Phone className="w-10 h-10 text-primary" />
+              </div>
+              <h4 className="font-bold text-xl text-primary-dark mb-3">Always Available</h4>
+              <p className="text-muted-foreground leading-relaxed">
+                Direct access to your agent for questions, support, and ongoing policy management
+              </p>
+            </div>
           </div>
         </div>
       </div>
