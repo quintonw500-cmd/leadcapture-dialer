@@ -15,7 +15,7 @@ const Header = () => {
               className="w-10 h-10"
             />
             <div>
-              <h1 className="text-xl font-bold text-primary-dark">SecureLife</h1>
+              <h1 className="text-xl font-bold text-primary-dark">US Life Help</h1>
               <p className="text-xs text-muted-foreground">Licensed Insurance Agent</p>
             </div>
           </div>

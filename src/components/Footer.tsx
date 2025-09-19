@@ -43,11 +43,11 @@ const Footer = () => {
               <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
                 <img 
                   src={shieldIcon} 
-                  alt="SecureLife Shield" 
+                  alt="US Life Help Shield" 
                   className="w-8 h-8"
                 />
                 <div>
-                  <h3 className="font-bold text-lg">SecureLife</h3>
+                  <h3 className="font-bold text-lg">US Life Help</h3>
                   <p className="text-sm text-white/70">Independent Insurance Agent</p>
                 </div>
               </div>
