@@ -91,6 +91,7 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
 
 const generateImage = async (prompt: string, openaiApiKey: string): Promise<string | null> => {
   try {
+    console.log('Generating image with prompt:', prompt);
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
       headers: {
@@ -98,28 +99,40 @@ const generateImage = async (prompt: string, openaiApiKey: string): Promise<stri
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
+        model: 'gpt-image-1',
         prompt: prompt,
         n: 1,
         size: '1024x1024',
-        quality: 'hd'
+        quality: 'high',
+        output_format: 'png'
       })
     });
 
+    console.log('OpenAI Image API response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI Image API error response:', errorText);
+      return null;
+    }
+
     const data = await response.json();
+    console.log('OpenAI Image API response received');
     
     if (data.error) {
       console.error('OpenAI Image API error:', data.error);
       return null;
     }
 
-    const imageUrl = data.data?.[0]?.url;
-    if (!imageUrl) return null;
+    // gpt-image-1 returns base64 directly in the response
+    const base64Image = data.data?.[0]?.b64_json;
+    if (!base64Image) {
+      console.error('No base64 image in response:', data);
+      return null;
+    }
     
-    const imageResponse = await fetch(imageUrl);
-    const imageBuffer = await imageResponse.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(imageBuffer)));
-    return base64;
+    console.log('Successfully generated image, base64 length:', base64Image.length);
+    return base64Image;
   } catch (error) {
     console.error('Error generating image:', error);
     return null;
