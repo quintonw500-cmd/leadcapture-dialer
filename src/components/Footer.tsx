@@ -112,12 +112,6 @@ const Footer = () => {
                   >
                     Admin Login
                   </a>
-                  <a 
-                    href="/blog-admin" 
-                    className="block text-primary hover:text-white transition-colors"
-                  >
-                    Blog Admin
-                  </a>
                 </div>
               </div>
             </div>
@@ -145,14 +139,6 @@ const Footer = () => {
               |
               <a href="/terms-of-service" className="text-primary hover:text-white mx-2 transition-colors">
                 Terms of Service
-              </a>
-              |
-              <a href="/auth" className="text-primary hover:text-white mx-2 transition-colors">
-                Admin Login
-              </a>
-              |
-              <a href="/blog-admin" className="text-primary hover:text-white mx-2 transition-colors">
-                Blog Admin
               </a>
             </nav>
             
