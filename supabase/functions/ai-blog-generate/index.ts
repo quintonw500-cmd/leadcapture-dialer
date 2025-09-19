@@ -91,21 +91,59 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
   }
 };
 
+const generateImage = async (prompt: string, openaiApiKey: string): Promise<string | null> => {
+  try {
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openaiApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-image-1',
+        prompt: prompt,
+        n: 1,
+        size: '1024x1024',
+        quality: 'high',
+        output_format: 'png'
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.error) {
+      console.error('OpenAI Image API error:', data.error);
+      return null;
+    }
+
+    // OpenAI gpt-image-1 returns base64 directly
+    return data.data?.[0]?.b64_json || null;
+  } catch (error) {
+    console.error('Error generating image:', error);
+    return null;
+  }
+};
+
 const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string): Promise<string> => {
   const summariesText = summaries.filter(s => s).join('\n\n');
   
   const prompt = `Write an SEO-optimized article about: ${keyword}
 
-Use the following research content to construct the article. Do not repeat the same content. The article should be SEO-optimized and more than 1700 words. Format as Markdown.
+Use the following research content to construct the article. Do not repeat the same content. The article should be SEO-optimized and more than 1700 words. Format as HTML with proper semantic structure.
 
-In the introduction, answer key questions the reader may have. Generate Markdown links where appropriate. 
-
-Each h2 section must contain at least 100 words. Include a conclusion with a call to action.
+Structure the article with:
+- An engaging introduction that answers key questions
+- Multiple detailed sections (at least 4-5 H2 sections)
+- Each H2 section must contain at least 150 words
+- Include relevant subheadings (H3) where appropriate
+- Add a strong conclusion with a clear call to action
+- Use proper HTML tags: <h1>, <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
+- Include placeholder comments like <!-- IMAGE_PLACEHOLDER_1 --> after the introduction and between major sections for image insertion
 
 Research content:
 ${summariesText}
 
-Do not reference or promote the source articles directly.`;
+Do not reference or promote the source articles directly. Focus on life insurance topics and provide valuable, actionable information.`;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -118,7 +156,7 @@ Do not reference or promote the source articles directly.`;
       messages: [
         {
           role: 'system',
-          content: 'Act as a technical writer creating SEO-optimized articles. Use plain language and focus on providing valuable information.'
+          content: 'Act as a professional life insurance content writer creating SEO-optimized articles. Use clear, authoritative language and focus on providing valuable, trustworthy information that helps families make informed decisions about life insurance.'
         },
         {
           role: 'user',
@@ -130,7 +168,43 @@ Do not reference or promote the source articles directly.`;
   });
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content || '';
+  const article = data.choices?.[0]?.message?.content || '';
+  
+  // Generate relevant images and insert them
+  const imagePrompts = [
+    `Professional illustration about ${keyword} for life insurance education, clean and trustworthy style`,
+    `Infographic style illustration showing ${keyword} benefits for families, professional design`,
+    `Modern illustration representing ${keyword} in life insurance context, business professional style`
+  ];
+  
+  let articleWithImages = article;
+  
+  // Generate images and replace placeholders
+  for (let i = 0; i < Math.min(imagePrompts.length, 3); i++) {
+    console.log(`Generating image ${i + 1} for prompt: ${imagePrompts[i]}`);
+    const imageBase64 = await generateImage(imagePrompts[i], openaiApiKey);
+    
+    if (imageBase64) {
+      const imageHtml = `<div class="blog-image">
+        <img src="data:image/png;base64,${imageBase64}" alt="${keyword} illustration ${i + 1}" class="w-full h-auto rounded-lg shadow-md my-6" />
+      </div>`;
+      
+      // Replace placeholder or insert at strategic positions
+      const placeholder = `<!-- IMAGE_PLACEHOLDER_${i + 1} -->`;
+      if (articleWithImages.includes(placeholder)) {
+        articleWithImages = articleWithImages.replace(placeholder, imageHtml);
+      } else {
+        // Insert images at strategic positions in the content
+        const sections = articleWithImages.split('<h2>');
+        if (sections.length > i + 1) {
+          sections[i + 1] = imageHtml + '\n<h2>' + sections[i + 1];
+          articleWithImages = sections.join('<h2>');
+        }
+      }
+    }
+  }
+  
+  return articleWithImages;
 };
 
 const generateTitles = async (keyword: string, openaiApiKey: string): Promise<string> => {
@@ -224,16 +298,23 @@ serve(async (req) => {
       generateTitles(keyword, openaiApiKey)
     ]);
 
-    // Save to database
+    // Generate a compelling title from the suggested titles
+    const titleLines = titles.split('\n').filter(line => line.trim());
+    const selectedTitle = titleLines.find(line => line.match(/^\d+\./))?.replace(/^\d+\.\s*/, '') || 
+                         titleLines[0]?.replace(/^[-•*]\s*/, '') || 
+                         keyword;
+
+    // Save to database and auto-publish
     const { data: blogPost, error } = await supabaseClient
       .from('blog_posts')
       .insert({
         keyword,
-        title: keyword,
+        title: selectedTitle,
         content: article,
         suggested_titles: titles,
-        status: 'draft',
-        word_count: article.split(' ').length
+        status: 'published', // Auto-publish to blog
+        word_count: article.replace(/<[^>]*>/g, '').split(' ').length, // Count words excluding HTML tags
+        published_at: new Date().toISOString()
       })
       .select()
       .single();

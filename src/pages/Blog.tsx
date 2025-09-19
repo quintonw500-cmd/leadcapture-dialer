@@ -91,10 +91,10 @@ const Blog = () => {
               </div>
             </header>
             
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-lg max-w-none blog-content">
               <div 
-                className="text-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: selectedPost.content.replace(/\n/g, '<br />') }}
+                className="text-foreground leading-relaxed space-y-6"
+                dangerouslySetInnerHTML={{ __html: selectedPost.content }}
               />
             </div>
           </article>

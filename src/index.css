@@ -168,4 +168,48 @@
   .stat-number {
     @apply text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-dark to-primary bg-clip-text text-transparent;
   }
+
+  .blog-content {
+    @apply text-foreground;
+  }
+
+  .blog-content h1 {
+    @apply text-3xl font-bold text-foreground mb-6 mt-8;
+  }
+
+  .blog-content h2 {
+    @apply text-2xl font-semibold text-foreground mb-4 mt-8;
+  }
+
+  .blog-content h3 {
+    @apply text-xl font-medium text-foreground mb-3 mt-6;
+  }
+
+  .blog-content p {
+    @apply text-foreground mb-4 leading-relaxed;
+  }
+
+  .blog-content ul {
+    @apply text-foreground mb-4 pl-6 space-y-2;
+  }
+
+  .blog-content li {
+    @apply text-foreground list-disc;
+  }
+
+  .blog-content strong {
+    @apply font-semibold text-foreground;
+  }
+
+  .blog-content em {
+    @apply italic text-foreground;
+  }
+
+  .blog-content .blog-image {
+    @apply my-8 text-center;
+  }
+
+  .blog-content .blog-image img {
+    @apply w-full max-w-2xl h-auto rounded-lg shadow-md mx-auto;
+  }
 }
