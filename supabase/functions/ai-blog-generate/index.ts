@@ -100,12 +100,11 @@ const generateImage = async (prompt: string, openaiApiKey: string): Promise<stri
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-image-1',
+        model: 'dall-e-3',
         prompt: prompt,
         n: 1,
         size: '1024x1024',
-        quality: 'high',
-        output_format: 'png'
+        quality: 'hd'
       })
     });
 
@@ -116,8 +115,15 @@ const generateImage = async (prompt: string, openaiApiKey: string): Promise<stri
       return null;
     }
 
-    // OpenAI gpt-image-1 returns base64 directly
-    return data.data?.[0]?.b64_json || null;
+    // OpenAI DALL-E returns URL, we need to fetch and convert to base64
+    const imageUrl = data.data?.[0]?.url;
+    if (!imageUrl) return null;
+    
+    // Fetch the image and convert to base64
+    const imageResponse = await fetch(imageUrl);
+    const imageBuffer = await imageResponse.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(imageBuffer)));
+    return base64;
   } catch (error) {
     console.error('Error generating image:', error);
     return null;
