@@ -80,22 +80,55 @@ const Footer = () => {
 
             {/* Legal Info */}
             <div>
-              <h4 className="font-semibold mb-4">Important Information</h4>
+              <h4 className="font-semibold mb-4">Legal & Resources</h4>
               <div className="text-sm text-white/80 space-y-2">
                 <p>Licensed insurance professional</p>
                 <p>Rates vary by age, health, and coverage</p>
                 <p>No obligation free consultations</p>
                 <p>All quotes are confidential</p>
+                
+                <div className="pt-3 space-y-1">
+                  <a 
+                    href="/privacy-policy" 
+                    className="block text-primary hover:text-white transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                  <a 
+                    href="/terms-of-service" 
+                    className="block text-primary hover:text-white transition-colors"
+                  >
+                    Terms of Service
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
           <div className="border-t border-white/10 mt-8 pt-6 text-center text-sm text-white/60">
-            <p>&copy; 2024 SecureLife Insurance Services. All rights reserved.</p>
-            <p className="mt-2">
-              This website is operated by a licensed independent insurance agent. 
-              Not affiliated with any government agency.
+            <div className="mb-4">
+              <p className="font-semibold text-white/80 mb-2">Licensed Insurance Agent</p>
+              <p className="max-w-4xl mx-auto">
+                Coverage determinations are fact-based and determined by the insurance carrier. 
+                This information does not constitute insurance advice. We are licensed independent 
+                insurance agents representing multiple carriers to find you the best coverage options.
+              </p>
+            </div>
+            
+            <nav className="mb-4">
+              <a href="/privacy-policy" className="text-primary hover:text-white mx-2 transition-colors">
+                Privacy Policy
+              </a>
+              |
+              <a href="/terms-of-service" className="text-primary hover:text-white mx-2 transition-colors">
+                Terms of Service
+              </a>
+            </nav>
+            
+            <p>&copy; 2025 US Life Help. All rights reserved.</p>
+            <p className="mt-2 text-xs">
+              Licensed in all states where services are provided. Not affiliated with any government agency.
             </p>
           </div>
         </div>
