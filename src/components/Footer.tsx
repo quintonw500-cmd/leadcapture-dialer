@@ -89,6 +89,12 @@ const Footer = () => {
                 
                 <div className="pt-3 space-y-1">
                   <a 
+                    href="/blog" 
+                    className="block text-primary hover:text-white transition-colors"
+                  >
+                    Blog
+                  </a>
+                  <a 
                     href="/privacy-policy" 
                     className="block text-primary hover:text-white transition-colors"
                   >
@@ -129,6 +135,10 @@ const Footer = () => {
             </div>
             
             <nav className="mb-4">
+              <a href="/blog" className="text-primary hover:text-white mx-2 transition-colors">
+                Blog
+              </a>
+              |
               <a href="/privacy-policy" className="text-primary hover:text-white mx-2 transition-colors">
                 Privacy Policy
               </a>
