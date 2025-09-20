@@ -1,5 +1,5 @@
 import { Phone, CheckCircle, Shield, Clock, Users } from "lucide-react";
-import heroFamily from "../assets/hero-family-new.jpg";
+import heroFamily from "../assets/hero-family.jpg";
 
 const HeroSection = () => {
   const phoneNumber = "866-595-7540";

@@ -91,28 +91,60 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
   }
 };
 
-const getStaticImage = (): string => {
-  // Static images array to rotate through
-  const staticImages = [
-    '/images/life-insurance-client-testimonials.png',
-    '/images/life-insurance-consultation-meeting.png',
-    '/images/life-insurance-quote-calculator.png',
-    '/images/family-protection-life-insurance.png',
-    '/images/final-expense-insurance-coverage.png',
-    '/images/free-life-insurance-quote-process.png',
-    '/images/family-protection-life-insurance-2.png',
-    '/images/licensed-life-insurance-agent-office.png'
-  ];
-  
-  // Return a random image from the array
-  const randomIndex = Math.floor(Math.random() * staticImages.length);
-  return staticImages[randomIndex];
+const generateImage = async (prompt: string, openaiApiKey: string): Promise<string | null> => {
+  try {
+    console.log('Generating image with prompt:', prompt);
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openaiApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-image-1',
+        prompt: prompt,
+        n: 1,
+        size: '1024x1024',
+        quality: 'high',
+        output_format: 'png'
+      })
+    });
+
+    console.log('OpenAI Image API response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI Image API error response:', errorText);
+      return null;
+    }
+
+    const data = await response.json();
+    console.log('OpenAI Image API response received');
+    
+    if (data.error) {
+      console.error('OpenAI Image API error:', data.error);
+      return null;
+    }
+
+    // gpt-image-1 returns base64 directly in the response
+    const base64Image = data.data?.[0]?.b64_json;
+    if (!base64Image) {
+      console.error('No base64 image in response:', data);
+      return null;
+    }
+    
+    console.log('Successfully generated image, base64 length:', base64Image.length);
+    return base64Image;
+  } catch (error) {
+    console.error('Error generating image:', error);
+    return null;
+  }
 };
 
 const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string): Promise<string> => {
   const summariesText = summaries.filter(s => s).join('\n\n');
   
-const prompt = `Write an SEO-optimized article about: ${keyword}
+  const prompt = `Write an SEO-optimized article about: ${keyword}
 
 Use the following research content to construct the article. Do not repeat the same content. The article should be SEO-optimized and more than 1700 words. Format as HTML with proper semantic structure.
 
@@ -127,12 +159,8 @@ Structure the article with:
 
 SEO Requirements:
 - Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
-- CRITICAL: Add 2-3 strategic internal links using these exact patterns:
-  * In the first 200 words: <a href="/">get a free life insurance quote</a>
-  * In a service mention: <a href="/">speak with our licensed insurance experts</a> 
-  * In conclusion: <a href="/">compare life insurance rates and get your personalized quote today</a>
-- Place internal links naturally within content, not just at the end
-- Include a strong call-to-action in the conclusion with phone number: Call 866-595-7540
+- Add 2-3 internal links back to homepage using anchor text like "get a life insurance quote", "compare life insurance rates", or "speak with our insurance experts"
+- Include a clear call-to-action in the conclusion linking to the homepage
 
 Research content:
 ${summariesText}
@@ -164,45 +192,67 @@ Do not reference or promote the source articles directly. Focus on life insuranc
   const data = await response.json();
   const article = data.choices?.[0]?.message?.content || '';
   
-  // Get static images for the article
-  const staticImages = [
-    getStaticImage(),
-    getStaticImage()
+  // Generate at least 2 relevant images and insert them
+  const imagePrompts = [
+    `Professional illustration about ${keyword} for life insurance education, clean and trustworthy style, no text`,
+    `Modern family protection concept for ${keyword}, professional insurance illustration, no text`,
+    `Business meeting about ${keyword} life insurance consultation, professional style, no text`,
+    `Financial planning chart showing ${keyword} benefits, infographic style, no text`
   ];
   
   let articleWithImages = article;
-  let imagesInserted = 0;
+  let imagesGenerated = 0;
+  const minImages = 2;
   
-  // Insert static images strategically
-  for (let i = 0; i < staticImages.length; i++) {
-    const imageUrl = staticImages[i];
-    const imageHtml = `<div class="blog-image">
-      <img src="${imageUrl}" alt="${keyword} life insurance guide and coverage options" class="w-full h-auto rounded-lg shadow-md my-6" />
-    </div>`;
+  // Generate images and insert them strategically
+  for (let i = 0; i < imagePrompts.length && imagesGenerated < Math.max(minImages, 3); i++) {
+    console.log(`Generating image ${i + 1} for prompt: ${imagePrompts[i]}`);
+    const imageBase64 = await generateImage(imagePrompts[i], openaiApiKey);
     
-    // Replace placeholder or insert at strategic positions
-    const placeholder = `<!-- IMAGE_PLACEHOLDER_${i + 1} -->`;
-    if (articleWithImages.includes(placeholder)) {
-      articleWithImages = articleWithImages.replace(placeholder, imageHtml);
-    } else {
-      // Insert images at strategic positions - after intro and between sections
-      if (imagesInserted === 0) {
-        // Insert first image after the first paragraph
-        const firstParagraphEnd = articleWithImages.indexOf('</p>');
-        if (firstParagraphEnd !== -1) {
-          articleWithImages = articleWithImages.slice(0, firstParagraphEnd + 4) + '\n\n' + imageHtml + '\n\n' + articleWithImages.slice(firstParagraphEnd + 4);
-        }
+    if (imageBase64) {
+      const imageHtml = `<div class="blog-image">
+        <img src="data:image/png;base64,${imageBase64}" alt="${keyword} illustration showing key concepts" class="w-full h-auto rounded-lg shadow-md my-6" />
+      </div>`;
+      
+      // Replace placeholder or insert at strategic positions
+      const placeholder = `<!-- IMAGE_PLACEHOLDER_${i + 1} -->`;
+      if (articleWithImages.includes(placeholder)) {
+        articleWithImages = articleWithImages.replace(placeholder, imageHtml);
       } else {
-        // Insert subsequent images between H2 sections
-        const sections = articleWithImages.split('<h2>');
-        const targetSection = Math.min(imagesInserted + 1, sections.length - 1);
-        if (sections.length > targetSection) {
-          sections[targetSection] = imageHtml + '\n\n<h2>' + sections[targetSection];
-          articleWithImages = sections.join('<h2>');
+        // Insert images at strategic positions - after intro and between sections
+        if (imagesGenerated === 0) {
+          // Insert first image after the first paragraph
+          const firstParagraphEnd = articleWithImages.indexOf('</p>');
+          if (firstParagraphEnd !== -1) {
+            articleWithImages = articleWithImages.slice(0, firstParagraphEnd + 4) + '\n\n' + imageHtml + '\n\n' + articleWithImages.slice(firstParagraphEnd + 4);
+          }
+        } else {
+          // Insert subsequent images between H2 sections
+          const sections = articleWithImages.split('<h2>');
+          const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
+          if (sections.length > targetSection) {
+            sections[targetSection] = imageHtml + '\n\n<h2>' + sections[targetSection];
+            articleWithImages = sections.join('<h2>');
+          }
         }
       }
+      imagesGenerated++;
     }
-    imagesInserted++;
+  }
+  
+  // If we didn't get minimum images, add fallback images
+  while (imagesGenerated < minImages) {
+    const fallbackImageHtml = `<div class="blog-image">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIiBzdHJva2U9IiNlNWU3ZWIiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2Mzc0OGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7a2V5d29yZH08L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk3YTNiNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TGlmZSBJbnN1cmFuY2UgR3VpZGU8L3RleHQ+Cjwvc3ZnPg==" alt="${keyword} life insurance guide" class="w-full h-auto rounded-lg shadow-md my-6" />
+    </div>`;
+    
+    const sections = articleWithImages.split('<h2>');
+    const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
+    if (sections.length > targetSection) {
+      sections[targetSection] = fallbackImageHtml + '\n\n<h2>' + sections[targetSection];
+      articleWithImages = sections.join('<h2>');
+    }
+    imagesGenerated++;
   }
   
   return articleWithImages;
