@@ -112,7 +112,7 @@ const getStaticImage = (): string => {
 const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string): Promise<string> => {
   const summariesText = summaries.filter(s => s).join('\n\n');
   
-  const prompt = `Write an SEO-optimized article about: ${keyword}
+const prompt = `Write an SEO-optimized article about: ${keyword}
 
 Use the following research content to construct the article. Do not repeat the same content. The article should be SEO-optimized and more than 1700 words. Format as HTML with proper semantic structure.
 
@@ -127,8 +127,12 @@ Structure the article with:
 
 SEO Requirements:
 - Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
-- Add 2-3 internal links back to homepage using anchor text like "get a life insurance quote", "compare life insurance rates", or "speak with our insurance experts"
-- Include a clear call-to-action in the conclusion linking to the homepage
+- CRITICAL: Add 2-3 strategic internal links using these exact patterns:
+  * In the first 200 words: <a href="/">get a free life insurance quote</a>
+  * In a service mention: <a href="/">speak with our licensed insurance experts</a> 
+  * In conclusion: <a href="/">compare life insurance rates and get your personalized quote today</a>
+- Place internal links naturally within content, not just at the end
+- Include a strong call-to-action in the conclusion with phone number: Call 866-595-7540
 
 Research content:
 ${summariesText}

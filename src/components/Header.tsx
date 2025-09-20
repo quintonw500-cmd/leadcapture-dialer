@@ -23,6 +23,12 @@ const Header = () => {
             </Link>
             
             <nav className="hidden lg:flex items-center space-x-4">
+              <Link to="/quote" className="text-foreground hover:text-primary transition-colors font-medium">
+                Get Quote
+              </Link>
+              <Link to="/blog" className="text-foreground hover:text-primary transition-colors font-medium">
+                Blog
+              </Link>
             </nav>
           </div>
           
