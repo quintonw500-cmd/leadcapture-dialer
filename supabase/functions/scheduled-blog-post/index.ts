@@ -92,14 +92,14 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
 const getStaticImage = (): string => {
   // Static images array to rotate through
   const staticImages = [
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life-insurance-client-testimonials.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life-insurance-consultation-meeting.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life-insurance-quote-calculator.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/family-protection-life-insurance.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/final-expense-insurance-coverage.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/free-life-insurance-quote-process.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/family-protection-life-insurance-2.png',
-    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/licensed-life-insurance-agent-office.png'
+    '/images/life-insurance-client-testimonials.png',
+    '/images/life-insurance-consultation-meeting.png',
+    '/images/life-insurance-quote-calculator.png',
+    '/images/family-protection-life-insurance.png',
+    '/images/final-expense-insurance-coverage.png',
+    '/images/free-life-insurance-quote-process.png',
+    '/images/family-protection-life-insurance-2.png',
+    '/images/licensed-life-insurance-agent-office.png'
   ];
   
   // Return a random image from the array
