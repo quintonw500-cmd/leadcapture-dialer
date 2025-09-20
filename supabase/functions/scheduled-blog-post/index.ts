@@ -138,9 +138,14 @@ Structure the article with:
 - Multiple detailed sections (at least 4-5 H2 sections)
 - Each H2 section must contain at least 150 words
 - Include relevant subheadings (H3) where appropriate
-- Add a strong conclusion with a clear call to action
+- Add a strong conclusion with a clear call to action that links to homepage
 - Use proper HTML tags: <h1>, <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
-- Include placeholder comments like <!-- IMAGE_PLACEHOLDER_1 --> after the introduction and between major sections for image insertion
+- IMPORTANT: Include image placeholder comments <!-- IMAGE_PLACEHOLDER_1 -->, <!-- IMAGE_PLACEHOLDER_2 -->, etc. after the introduction and between at least 2 major H2 sections for image insertion
+
+SEO Requirements:
+- Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
+- Add 2-3 internal links back to homepage using anchor text like "get a life insurance quote", "compare life insurance rates", or "speak with our insurance experts"
+- Include a clear call-to-action in the conclusion linking to the homepage
 
 Research content:
 ${summariesText}
@@ -172,34 +177,67 @@ Do not reference or promote the source articles directly. Focus on life insuranc
   const data = await response.json();
   const article = data.choices?.[0]?.message?.content || '';
   
+  // Generate at least 2 relevant images and insert them
   const imagePrompts = [
-    `Professional illustration about ${keyword} for life insurance education, clean and trustworthy style`,
-    `Infographic style illustration showing ${keyword} benefits for families, professional design`,
-    `Modern illustration representing ${keyword} in life insurance context, business professional style`
+    `Professional illustration about ${keyword} for life insurance education, clean and trustworthy style, no text`,
+    `Modern family protection concept for ${keyword}, professional insurance illustration, no text`,
+    `Business meeting about ${keyword} life insurance consultation, professional style, no text`,
+    `Financial planning chart showing ${keyword} benefits, infographic style, no text`
   ];
   
   let articleWithImages = article;
+  let imagesGenerated = 0;
+  const minImages = 2;
   
-  for (let i = 0; i < Math.min(imagePrompts.length, 3); i++) {
+  // Generate images and insert them strategically
+  for (let i = 0; i < imagePrompts.length && imagesGenerated < Math.max(minImages, 3); i++) {
     console.log(`Generating image ${i + 1} for prompt: ${imagePrompts[i]}`);
     const imageBase64 = await generateImage(imagePrompts[i], openaiApiKey);
     
     if (imageBase64) {
       const imageHtml = `<div class="blog-image">
-        <img src="data:image/png;base64,${imageBase64}" alt="${keyword} illustration ${i + 1}" class="w-full h-auto rounded-lg shadow-md my-6" />
+        <img src="data:image/png;base64,${imageBase64}" alt="${keyword} illustration showing key concepts" class="w-full h-auto rounded-lg shadow-md my-6" />
       </div>`;
       
+      // Replace placeholder or insert at strategic positions
       const placeholder = `<!-- IMAGE_PLACEHOLDER_${i + 1} -->`;
       if (articleWithImages.includes(placeholder)) {
         articleWithImages = articleWithImages.replace(placeholder, imageHtml);
       } else {
-        const sections = articleWithImages.split('<h2>');
-        if (sections.length > i + 1) {
-          sections[i + 1] = imageHtml + '\n<h2>' + sections[i + 1];
-          articleWithImages = sections.join('<h2>');
+        // Insert images at strategic positions - after intro and between sections
+        if (imagesGenerated === 0) {
+          // Insert first image after the first paragraph
+          const firstParagraphEnd = articleWithImages.indexOf('</p>');
+          if (firstParagraphEnd !== -1) {
+            articleWithImages = articleWithImages.slice(0, firstParagraphEnd + 4) + '\n\n' + imageHtml + '\n\n' + articleWithImages.slice(firstParagraphEnd + 4);
+          }
+        } else {
+          // Insert subsequent images between H2 sections
+          const sections = articleWithImages.split('<h2>');
+          const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
+          if (sections.length > targetSection) {
+            sections[targetSection] = imageHtml + '\n\n<h2>' + sections[targetSection];
+            articleWithImages = sections.join('<h2>');
+          }
         }
       }
+      imagesGenerated++;
     }
+  }
+  
+  // If we didn't get minimum images, add fallback images
+  while (imagesGenerated < minImages) {
+    const fallbackImageHtml = `<div class="blog-image">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIiBzdHJva2U9IiNlNWU3ZWIiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2Mzc0OGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7a2V5d29yZH08L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk3YTNiNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TGlmZSBJbnN1cmFuY2UgR3VpZGU8L3RleHQ+Cjwvc3ZnPg==" alt="${keyword} life insurance guide" class="w-full h-auto rounded-lg shadow-md my-6" />
+    </div>`;
+    
+    const sections = articleWithImages.split('<h2>');
+    const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
+    if (sections.length > targetSection) {
+      sections[targetSection] = fallbackImageHtml + '\n\n<h2>' + sections[targetSection];
+      articleWithImages = sections.join('<h2>');
+    }
+    imagesGenerated++;
   }
   
   return articleWithImages;

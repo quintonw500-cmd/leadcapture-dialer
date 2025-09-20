@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Blog Generation</title>
+</head>
+<body>
+    <button onclick="generateBlog()">Generate New Blog Post</button>
+    <div id="result"></div>
+
+    <script>
+        async function generateBlog() {
+            try {
+                const response = await fetch('https://pkekpnescchcguienvmy.supabase.co/functions/v1/ai-blog-generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrZWtwbmVzY2NoY2d1aWVudm15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzMDk5MzIsImV4cCI6MjA3Mzg4NTkzMn0.WGdQ2UkhqfryDQKKmtaxcd4isL8AYhgStvBylRVJyps'
+                    },
+                    body: JSON.stringify({
+                        keyword: "Life Insurance for Young Adults: Why You Need Coverage in Your 20s"
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
