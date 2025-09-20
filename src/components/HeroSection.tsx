@@ -78,7 +78,7 @@ const HeroSection = () => {
               <img 
                 src={heroFamily} 
                 alt="Happy family protected by life insurance coverage"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover object-top md:object-center"
               />
               
               {/* Overlay Stats */}
