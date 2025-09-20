@@ -89,54 +89,22 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
   }
 };
 
-const generateImage = async (prompt: string, openaiApiKey: string): Promise<string | null> => {
-  try {
-    console.log('Generating image with prompt:', prompt);
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-image-1',
-        prompt: prompt,
-        n: 1,
-        size: '1024x1024',
-        quality: 'high',
-        output_format: 'png'
-      })
-    });
-
-    console.log('OpenAI Image API response status:', response.status);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OpenAI Image API error response:', errorText);
-      return null;
-    }
-
-    const data = await response.json();
-    console.log('OpenAI Image API response received');
-    
-    if (data.error) {
-      console.error('OpenAI Image API error:', data.error);
-      return null;
-    }
-
-    // gpt-image-1 returns base64 directly in the response
-    const base64Image = data.data?.[0]?.b64_json;
-    if (!base64Image) {
-      console.error('No base64 image in response:', data);
-      return null;
-    }
-    
-    console.log('Successfully generated image, base64 length:', base64Image.length);
-    return base64Image;
-  } catch (error) {
-    console.error('Error generating image:', error);
-    return null;
-  }
+const getStaticImage = (): string => {
+  // Static images array to rotate through
+  const staticImages = [
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life-insurance-client-testimonials.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life-insurance-consultation-meeting.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/life-insurance-quote-calculator.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/family-protection-life-insurance.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/final-expense-insurance-coverage.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/free-life-insurance-quote-process.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/family-protection-life-insurance-2.png',
+    'https://pkekpnescchcguienvmy.supabase.co/storage/v1/object/public/blog-titles/licensed-life-insurance-agent-office.png'
+  ];
+  
+  // Return a random image from the array
+  const randomIndex = Math.floor(Math.random() * staticImages.length);
+  return staticImages[randomIndex];
 };
 
 const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string): Promise<string> => {
@@ -190,67 +158,45 @@ Do not reference or promote the source articles directly. Focus on life insuranc
   const data = await response.json();
   const article = data.choices?.[0]?.message?.content || '';
   
-  // Generate at least 2 relevant images and insert them
-  const imagePrompts = [
-    `Professional illustration about ${keyword} for life insurance education, clean and trustworthy style, no text`,
-    `Modern family protection concept for ${keyword}, professional insurance illustration, no text`,
-    `Business meeting about ${keyword} life insurance consultation, professional style, no text`,
-    `Financial planning chart showing ${keyword} benefits, infographic style, no text`
+  // Get static images for the article
+  const staticImages = [
+    getStaticImage(),
+    getStaticImage()
   ];
   
   let articleWithImages = article;
-  let imagesGenerated = 0;
-  const minImages = 2;
+  let imagesInserted = 0;
   
-  // Generate images and insert them strategically
-  for (let i = 0; i < imagePrompts.length && imagesGenerated < Math.max(minImages, 3); i++) {
-    console.log(`Generating image ${i + 1} for prompt: ${imagePrompts[i]}`);
-    const imageBase64 = await generateImage(imagePrompts[i], openaiApiKey);
-    
-    if (imageBase64) {
-      const imageHtml = `<div class="blog-image">
-        <img src="data:image/png;base64,${imageBase64}" alt="${keyword} illustration showing key concepts" class="w-full h-auto rounded-lg shadow-md my-6" />
-      </div>`;
-      
-      // Replace placeholder or insert at strategic positions
-      const placeholder = `<!-- IMAGE_PLACEHOLDER_${i + 1} -->`;
-      if (articleWithImages.includes(placeholder)) {
-        articleWithImages = articleWithImages.replace(placeholder, imageHtml);
-      } else {
-        // Insert images at strategic positions - after intro and between sections
-        if (imagesGenerated === 0) {
-          // Insert first image after the first paragraph
-          const firstParagraphEnd = articleWithImages.indexOf('</p>');
-          if (firstParagraphEnd !== -1) {
-            articleWithImages = articleWithImages.slice(0, firstParagraphEnd + 4) + '\n\n' + imageHtml + '\n\n' + articleWithImages.slice(firstParagraphEnd + 4);
-          }
-        } else {
-          // Insert subsequent images between H2 sections
-          const sections = articleWithImages.split('<h2>');
-          const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
-          if (sections.length > targetSection) {
-            sections[targetSection] = imageHtml + '\n\n<h2>' + sections[targetSection];
-            articleWithImages = sections.join('<h2>');
-          }
-        }
-      }
-      imagesGenerated++;
-    }
-  }
-  
-  // If we didn't get minimum images, add fallback images
-  while (imagesGenerated < minImages) {
-    const fallbackImageHtml = `<div class="blog-image">
-      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIiBzdHJva2U9IiNlNWU3ZWIiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2Mzc0OGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7a2V5d29yZH08L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk3YTNiNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TGlmZSBJbnN1cmFuY2UgR3VpZGU8L3RleHQ+Cjwvc3ZnPg==" alt="${keyword} life insurance guide" class="w-full h-auto rounded-lg shadow-md my-6" />
+  // Insert static images strategically
+  for (let i = 0; i < staticImages.length; i++) {
+    const imageUrl = staticImages[i];
+    const imageHtml = `<div class="blog-image">
+      <img src="${imageUrl}" alt="${keyword} life insurance guide and coverage options" class="w-full h-auto rounded-lg shadow-md my-6" />
     </div>`;
     
-    const sections = articleWithImages.split('<h2>');
-    const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
-    if (sections.length > targetSection) {
-      sections[targetSection] = fallbackImageHtml + '\n\n<h2>' + sections[targetSection];
-      articleWithImages = sections.join('<h2>');
+    // Replace placeholder or insert at strategic positions
+    const placeholder = `<!-- IMAGE_PLACEHOLDER_${i + 1} -->`;
+    if (articleWithImages.includes(placeholder)) {
+      articleWithImages = articleWithImages.replace(placeholder, imageHtml);
+    } else {
+      // Insert images at strategic positions - after intro and between sections
+      if (imagesInserted === 0) {
+        // Insert first image after the first paragraph
+        const firstParagraphEnd = articleWithImages.indexOf('</p>');
+        if (firstParagraphEnd !== -1) {
+          articleWithImages = articleWithImages.slice(0, firstParagraphEnd + 4) + '\n\n' + imageHtml + '\n\n' + articleWithImages.slice(firstParagraphEnd + 4);
+        }
+      } else {
+        // Insert subsequent images between H2 sections
+        const sections = articleWithImages.split('<h2>');
+        const targetSection = Math.min(imagesInserted + 1, sections.length - 1);
+        if (sections.length > targetSection) {
+          sections[targetSection] = imageHtml + '\n\n<h2>' + sections[targetSection];
+          articleWithImages = sections.join('<h2>');
+        }
+      }
     }
-    imagesGenerated++;
+    imagesInserted++;
   }
   
   return articleWithImages;
