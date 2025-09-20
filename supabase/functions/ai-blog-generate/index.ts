@@ -144,7 +144,7 @@ Structure the article with:
 - Include relevant subheadings (H3) where appropriate
 - Add a strong conclusion with a clear call to action that links to homepage
 - Use proper HTML tags: <h1>, <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
-- IMPORTANT: Include image placeholder comments <!-- IMAGE_PLACEHOLDER_1 -->, <!-- IMAGE_PLACEHOLDER_2 -->, etc. after the introduction and between at least 2 major H2 sections for image insertion
+- CRITICAL: DO NOT include any <img> tags in your response. Instead, use ONLY these placeholder comments for images: <!-- IMAGE_PLACEHOLDER_1 -->, <!-- IMAGE_PLACEHOLDER_2 -->, <!-- IMAGE_PLACEHOLDER_3 --> after the introduction and between major H2 sections. These will be replaced with actual generated images.
 
 SEO Requirements:
 - Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
@@ -179,7 +179,11 @@ Do not reference or promote the source articles directly. Focus on life insuranc
   });
 
   const data = await response.json();
-  const article = data.choices?.[0]?.message?.content || '';
+  let article = data.choices?.[0]?.message?.content || '';
+  
+  // Remove any existing image tags that the AI might have generated
+  article = article.replace(/<img[^>]*>/gi, '');
+  article = article.replace(/<div[^>]*class="blog-image"[^>]*>.*?<\/div>/gi, '');
   
   // Generate at least 2 relevant images and insert them
   const imagePrompts = [
