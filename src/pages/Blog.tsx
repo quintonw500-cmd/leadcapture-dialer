@@ -53,7 +53,7 @@ const Blog = () => {
         return;
       }
       // If the src looks empty or suspicious, swap immediately
-      if (!src || src.startsWith('blob:null') || src === 'about:blank')) {
+      if (!src || src.startsWith('blob:null') || src === 'about:blank') {
         handleError();
         return;
       }
