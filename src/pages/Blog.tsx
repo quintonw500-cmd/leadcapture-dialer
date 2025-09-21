@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -18,10 +18,47 @@ const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchPublishedPosts();
   }, []);
+
+  // Ensure broken or external images render a friendly placeholder
+  useEffect(() => {
+    if (!selectedPost) return;
+    const container = contentRef.current;
+    if (!container) return;
+
+    const imgs = container.querySelectorAll('img');
+    imgs.forEach((img) => {
+      img.setAttribute('loading', 'lazy');
+      img.setAttribute('decoding', 'async');
+
+      const handleError = () => {
+        const alt = img.getAttribute('alt') || selectedPost.keyword || 'Life insurance';
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="#eef2ff"/><text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#1e3a8a">${alt}</text><text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#6b7280">Image unavailable</text></svg>`;
+        try {
+          img.src = `data:image/svg+xml;base64,${btoa(svg)}`;
+        } catch (_) { /* no-op */ }
+        img.removeEventListener('error', handleError);
+      };
+
+      img.addEventListener('error', handleError);
+
+      const src = img.getAttribute('src') || '';
+      // If already failed before we attached listeners
+      if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) {
+        handleError();
+        return;
+      }
+      // If the src looks empty or suspicious, swap immediately
+      if (!src || src.startsWith('blob:null') || src === 'about:blank')) {
+        handleError();
+        return;
+      }
+    });
+  }, [selectedPost]);
 
   const fetchPublishedPosts = async () => {
     try {
@@ -93,6 +130,7 @@ const Blog = () => {
             
             <div className="prose prose-lg max-w-none blog-content">
               <div 
+                ref={contentRef}
                 className="text-foreground leading-relaxed space-y-6"
                 dangerouslySetInnerHTML={{ __html: selectedPost.content }}
               />
