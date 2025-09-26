@@ -374,9 +374,22 @@ serve(async (req) => {
     const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     
     console.log(`Day of year: ${dayOfYear}`);
+
+    // Allow overriding the keyword via POST body for manual tests
+    let overrideKeyword: string | null = null;
+    if (req.method === 'POST') {
+      try {
+        const body = await req.json();
+        if (body?.keyword && typeof body.keyword === 'string') {
+          overrideKeyword = body.keyword;
+        }
+      } catch (_) {
+        // ignore body parse errors
+      }
+    }
     
-    // Get the blog title for today
-    const blogTitle = await readCSVAndGetTitle(dayOfYear);
+    // Get the blog title for today or use override
+    const blogTitle = overrideKeyword ?? await readCSVAndGetTitle(dayOfYear);
     
     if (!blogTitle) {
       return new Response(
@@ -385,7 +398,7 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Today's blog title: ${blogTitle}`);
+    console.log(`Today's blog title: ${blogTitle}${overrideKeyword ? ' (override)' : ''}`);
 
     // Check if we already have a blog post for today
     const { data: existingPosts, error: checkError } = await supabaseClient
@@ -410,10 +423,7 @@ serve(async (req) => {
     const searchResults = await queryDuckDuckGo(blogTitle);
     
     if (searchResults.length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'No search results found for this keyword' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.log('No search results found; proceeding with zero-summaries fallback');
     }
 
     // Summarize content from search results
@@ -429,10 +439,7 @@ serve(async (req) => {
     }
 
     if (summaries.length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'Could not summarize any content for this keyword' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.log('No summaries generated; continuing with keyword-only generation');
     }
 
     // Generate article and titles
