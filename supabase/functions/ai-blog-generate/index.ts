@@ -94,7 +94,7 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
 const generateImage = async (
   prompt: string,
   openaiApiKey: string,
-  supabaseClient: ReturnType<typeof createClient>,
+  supabaseClient: any,
   keywordSlug: string
 ): Promise<string | null> => {
   try {
@@ -159,7 +159,7 @@ const generateImage = async (
   }
 };
 
-const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string, supabaseClient: ReturnType<typeof createClient>): Promise<string> => {
+const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string, supabaseClient: any): Promise<string> => {
   const summariesText = summaries.filter(s => s).join('\n\n');
 
   const slugify = (str: string) =>
