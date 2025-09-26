@@ -177,23 +177,34 @@ const BlogAdmin = () => {
                   className="text-lg"
                 />
               </div>
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isGenerating || !keyword.trim()}
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Generating Article...
-                  </>
-                ) : (
-                  <>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Generate Blog Post
-                  </>
-                )}
-              </Button>
+              <div className="space-y-2">
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isGenerating || !keyword.trim()}
+                >
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Generating Article...
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4 mr-2" />
+                      Generate Blog Post
+                    </>
+                  )}
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  className="w-full" 
+                  disabled={isGenerating}
+                  onClick={() => setKeyword("Life Insurance for Young Adults: Why You Need Coverage in Your 20s")}
+                >
+                  Quick Test: Generate Life Insurance Post
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>
