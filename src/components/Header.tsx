@@ -1,16 +1,26 @@
 import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import shieldIcon from "../assets/shield-icon.png";
+import { useAnalyticsContext } from "./AnalyticsProvider";
 
 const Header = () => {
   const phoneNumber = "866-595-7540";
+  const { trackPhoneCall, trackNavigation } = useAnalyticsContext();
+
+  const handlePhoneClick = () => {
+    trackPhoneCall(phoneNumber, 'header');
+  };
+
+  const handleLogoClick = () => {
+    trackNavigation('/', 'header_logo');
+  };
   
   return (
     <header className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
-            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity" onClick={handleLogoClick}>
               <img 
                 src={shieldIcon} 
                 alt="Life Insurance Shield" 
@@ -34,6 +44,7 @@ const Header = () => {
             <a 
               href={`tel:${phoneNumber}`}
               className="btn-call flex items-center space-x-2"
+              onClick={handlePhoneClick}
             >
               <Phone className="w-5 h-5" />
               <span>{phoneNumber}</span>
@@ -45,6 +56,7 @@ const Header = () => {
             <a 
               href={`tel:${phoneNumber}`}
               className="btn-call flex items-center space-x-2 text-sm px-4 py-2"
+              onClick={handlePhoneClick}
             >
               <Phone className="w-4 h-4" />
               <span>Call Now</span>

@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
@@ -13,6 +14,7 @@ import BlogAdmin from "./pages/BlogAdmin";
 import BlogScheduler from "./pages/BlogScheduler";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import SEOAnalytics from "./components/SEOAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +25,8 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
+          <AnalyticsProvider>
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -45,9 +48,18 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path="/seo-analytics" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <SEOAnalytics />
+                </ProtectedRoute>
+              } 
+            />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
-          </Routes>
+            </Routes>
+          </AnalyticsProvider>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

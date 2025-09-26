@@ -1,8 +1,18 @@
 import { Phone, Shield, Mail, MapPin } from "lucide-react";
 import shieldIcon from "../assets/shield-icon.png";
+import { useAnalyticsContext } from "./AnalyticsProvider";
 
 const Footer = () => {
   const phoneNumber = "866-595-7540";
+  const { trackPhoneCall, trackNavigation } = useAnalyticsContext();
+
+  const handlePhoneClick = (location: string) => () => {
+    trackPhoneCall(phoneNumber, location);
+  };
+
+  const handleNavClick = (destination: string, source: string) => () => {
+    trackNavigation(destination, source);
+  };
   
   return (
     <footer className="bg-primary-dark text-white">
@@ -20,6 +30,7 @@ const Footer = () => {
           <a 
             href={`tel:${phoneNumber}`}
             className="inline-flex items-center space-x-3 bg-white text-primary-dark font-bold py-4 px-8 rounded-xl hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg"
+            onClick={handlePhoneClick('footer_cta')}
           >
             <Phone className="w-6 h-6" />
             <div className="text-left">
@@ -63,7 +74,7 @@ const Footer = () => {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center justify-center md:justify-start space-x-2">
                   <Phone className="w-4 h-4 text-primary" />
-                  <a href={`tel:${phoneNumber}`} className="hover:text-primary transition-colors">
+                  <a href={`tel:${phoneNumber}`} className="hover:text-primary transition-colors" onClick={handlePhoneClick('footer_contact')}>
                     {phoneNumber}
                   </a>
                 </div>
@@ -91,32 +102,44 @@ const Footer = () => {
                   <a 
                     href="/blog" 
                     className="block text-primary hover:text-white transition-colors"
+                    onClick={handleNavClick('/blog', 'footer_resources')}
                   >
                     Blog
                   </a>
                   <a 
                     href="/privacy-policy" 
                     className="block text-primary hover:text-white transition-colors"
+                    onClick={handleNavClick('/privacy-policy', 'footer_resources')}
                   >
                     Privacy Policy
                   </a>
                   <a 
                     href="/terms-of-service" 
                     className="block text-primary hover:text-white transition-colors"
+                    onClick={handleNavClick('/terms-of-service', 'footer_resources')}
                   >
                     Terms of Service
                   </a>
                   <a 
                     href="/auth" 
                     className="block text-primary hover:text-white transition-colors"
+                    onClick={handleNavClick('/auth', 'footer_resources')}
                   >
                     Admin Login
                   </a>
                   <a 
                     href="/blog-scheduler" 
                     className="block text-primary hover:text-white transition-colors"
+                    onClick={handleNavClick('/blog-scheduler', 'footer_resources')}
                   >
                     Blog Scheduler
+                  </a>
+                  <a 
+                    href="/seo-analytics" 
+                    className="block text-primary hover:text-white transition-colors"
+                    onClick={handleNavClick('/seo-analytics', 'footer_resources')}
+                  >
+                    SEO Analytics
                   </a>
                 </div>
               </div>
@@ -135,7 +158,7 @@ const Footer = () => {
             </div>
             
             <nav className="mb-4">
-              <a href="/blog" className="text-primary hover:text-white mx-2 transition-colors">
+              <a href="/blog" className="text-primary hover:text-white mx-2 transition-colors" onClick={handleNavClick('/blog', 'footer_bottom')}>
                 Blog
               </a>
               |

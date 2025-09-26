@@ -1,8 +1,18 @@
 import { Phone, CheckCircle, Shield, Clock, Users } from "lucide-react";
 import heroFamily from "../assets/hero-family-new.jpg";
+import { useAnalyticsContext } from "./AnalyticsProvider";
 
 const HeroSection = () => {
   const phoneNumber = "866-595-7540";
+  const { trackPhoneCall, trackEngagement } = useAnalyticsContext();
+
+  const handlePhoneClick = () => {
+    trackPhoneCall(phoneNumber, 'hero_section');
+  };
+
+  const handleBenefitView = (benefit: string) => {
+    trackEngagement('benefit', benefit, 'view');
+  };
   
   return (
     <section className="hero-section py-16 lg:py-24 text-white">
@@ -53,6 +63,7 @@ const HeroSection = () => {
               <a 
                 href={`tel:${phoneNumber}`}
                 className="btn-call w-full md:w-auto inline-flex items-center justify-center space-x-3 text-lg"
+                onClick={handlePhoneClick}
               >
                 <Phone className="w-6 h-6" />
                 <div className="text-left">
