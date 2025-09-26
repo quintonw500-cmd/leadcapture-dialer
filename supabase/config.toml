@@ -1,1 +1,7 @@
 project_id = "pkekpnescchcguienvmy"
+
+[functions.ai-blog-generate]
+verify_jwt = false
+
+[functions.scheduled-blog-post]
+verify_jwt = false

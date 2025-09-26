@@ -91,7 +91,12 @@ const summarizeContent = async (url: string, openaiApiKey: string): Promise<stri
   }
 };
 
-const generateImage = async (prompt: string, openaiApiKey: string): Promise<string | null> => {
+const generateImage = async (
+  prompt: string,
+  openaiApiKey: string,
+  supabaseClient: ReturnType<typeof createClient>,
+  keywordSlug: string
+): Promise<string | null> => {
   try {
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -109,52 +114,81 @@ const generateImage = async (prompt: string, openaiApiKey: string): Promise<stri
     });
 
     const data = await response.json();
-    
+
     if (data.error) {
       console.error('OpenAI Image API error:', data.error);
       return null;
     }
 
-    // OpenAI DALL-E returns URL, we need to fetch and convert to base64
     const imageUrl = data.data?.[0]?.url;
     if (!imageUrl) return null;
-    
-    // Fetch the image and convert to base64
+
+    // Download the image
     const imageResponse = await fetch(imageUrl);
-    const imageBuffer = await imageResponse.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(imageBuffer)));
-    return base64;
+    if (!imageResponse.ok) {
+      console.error('Failed to download generated image');
+      return null;
+    }
+    const arrayBuffer = await imageResponse.arrayBuffer();
+
+    // Create a unique path and upload to public storage
+    const fileExt = 'png';
+    const fileName = `${crypto.randomUUID()}.${fileExt}`;
+    const filePath = `${keywordSlug}/${fileName}`;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from('blog-images')
+      .upload(filePath, arrayBuffer, {
+        contentType: 'image/png',
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error('Storage upload error:', uploadError);
+      return null;
+    }
+
+    const { data: publicData } = supabaseClient.storage
+      .from('blog-images')
+      .getPublicUrl(filePath);
+
+    return publicData.publicUrl || null;
   } catch (error) {
-    console.error('Error generating image:', error);
+    console.error('Error generating/uploading image:', error);
     return null;
   }
 };
 
-const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string): Promise<string> => {
+const generateArticle = async (keyword: string, summaries: string[], openaiApiKey: string, supabaseClient: ReturnType<typeof createClient>): Promise<string> => {
   const summariesText = summaries.filter(s => s).join('\n\n');
+
+  const slugify = (str: string) =>
+    str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '').slice(0, 60);
+
+  const keywordSlug = slugify(keyword || 'life-insurance');
   
   const prompt = `Write an SEO-optimized article about: ${keyword}
-
-Use the following research content to construct the article. Do not repeat the same content. The article should be SEO-optimized and more than 1700 words. Format as HTML with proper semantic structure.
-
-Structure the article with:
-- An engaging introduction that answers key questions
-- Multiple detailed sections (at least 4-5 H2 sections)  
-- Each H2 section must contain at least 150 words
-- Include relevant subheadings (H3) where appropriate
-- Add a strong conclusion with a clear call to action that links to homepage
-- Use proper HTML tags: <h1>, <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
-- CRITICAL: DO NOT include any <img> tags in your response. Instead, use ONLY these placeholder comments for images: <!-- IMAGE_PLACEHOLDER_1 -->, <!-- IMAGE_PLACEHOLDER_2 -->, <!-- IMAGE_PLACEHOLDER_3 --> after the introduction and between major H2 sections. These will be replaced with actual generated images.
-
-SEO Requirements:
-- Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
-- Add 2-3 internal links back to homepage using anchor text like "get a life insurance quote", "compare life insurance rates", or "speak with our insurance experts"
-- Include a clear call-to-action in the conclusion linking to the homepage
-
-Research content:
-${summariesText}
-
-Do not reference or promote the source articles directly. Focus on life insurance topics and provide valuable, actionable information.`;
+  
+  Use the following research content to construct the article. Do not repeat the same content. The article should be SEO-optimized and more than 1700 words. Format as HTML with proper semantic structure.
+  
+  Structure the article with:
+  - An engaging introduction that answers key questions
+  - Multiple detailed sections (at least 4-5 H2 sections)  
+  - Each H2 section must contain at least 150 words
+  - Include relevant subheadings (H3) where appropriate
+  - Add a strong conclusion with a clear call to action that links to homepage
+  - Use proper HTML tags: <h1>, <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
+  - CRITICAL: DO NOT include any <img> tags in your response. Instead, use ONLY these placeholder comments for images: <!-- IMAGE_PLACEHOLDER_1 -->, <!-- IMAGE_PLACEHOLDER_2 -->, <!-- IMAGE_PLACEHOLDER_3 --> after the introduction and between major H2 sections. These will be replaced with actual generated images.
+  
+  SEO Requirements:
+  - Naturally include LSI keywords throughout: life insurance quotes, insurance coverage, death benefit, beneficiaries, policy premiums, insurance companies, financial protection, family security, insurance agent, policy terms, coverage amount, insurance rates, life insurance policy, insurance plans, permanent life insurance, term life coverage
+  - Add 2-3 internal links back to homepage using anchor text like "get a life insurance quote", "compare life insurance rates", or "speak with our insurance experts"
+  - Include a clear call-to-action in the conclusion linking to the homepage
+  
+  Research content:
+  ${summariesText}
+  
+  Do not reference or promote the source articles directly. Focus on life insurance topics and provide valuable, actionable information.`;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -185,7 +219,7 @@ Do not reference or promote the source articles directly. Focus on life insuranc
   article = article.replace(/<img[^>]*>/gi, '');
   article = article.replace(/<div[^>]*class="blog-image"[^>]*>.*?<\/div>/gi, '');
   
-  // Generate at least 2 relevant images and insert them
+  // Generate at least 2 relevant images and insert them (uploaded to Storage)
   const imagePrompts = [
     `Professional illustration about ${keyword} for life insurance education, clean and trustworthy style, no text`,
     `Modern family protection concept for ${keyword}, professional insurance illustration, no text`,
@@ -197,14 +231,13 @@ Do not reference or promote the source articles directly. Focus on life insuranc
   let imagesGenerated = 0;
   const minImages = 2;
   
-  // Generate images and insert them strategically
   for (let i = 0; i < imagePrompts.length && imagesGenerated < Math.max(minImages, 3); i++) {
     console.log(`Generating image ${i + 1} for prompt: ${imagePrompts[i]}`);
-    const imageBase64 = await generateImage(imagePrompts[i], openaiApiKey);
+    const publicUrl = await generateImage(imagePrompts[i], openaiApiKey, supabaseClient, keywordSlug);
     
-    if (imageBase64) {
+    if (publicUrl) {
       const imageHtml = `<div class="blog-image">
-        <img src="data:image/png;base64,${imageBase64}" alt="${keyword} illustration showing key concepts" class="w-full h-auto rounded-lg shadow-md my-6" />
+        <img src="${publicUrl}" alt="${keyword} illustration showing key concepts" class="w-full h-auto rounded-lg shadow-md my-6" />
       </div>`;
       
       // Replace placeholder or insert at strategic positions
@@ -212,15 +245,12 @@ Do not reference or promote the source articles directly. Focus on life insuranc
       if (articleWithImages.includes(placeholder)) {
         articleWithImages = articleWithImages.replace(placeholder, imageHtml);
       } else {
-        // Insert images at strategic positions - after intro and between sections
         if (imagesGenerated === 0) {
-          // Insert first image after the first paragraph
           const firstParagraphEnd = articleWithImages.indexOf('</p>');
           if (firstParagraphEnd !== -1) {
             articleWithImages = articleWithImages.slice(0, firstParagraphEnd + 4) + '\n\n' + imageHtml + '\n\n' + articleWithImages.slice(firstParagraphEnd + 4);
           }
         } else {
-          // Insert subsequent images between H2 sections
           const sections = articleWithImages.split('<h2>');
           const targetSection = Math.min(imagesGenerated + 1, sections.length - 1);
           if (sections.length > targetSection) {
@@ -233,7 +263,7 @@ Do not reference or promote the source articles directly. Focus on life insuranc
     }
   }
   
-  // If we didn't get minimum images, add fallback images
+  // If we didn't get minimum images, add inline SVG fallbacks (always load)
   while (imagesGenerated < minImages) {
     const fallbackImageHtml = `<div class="blog-image">
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIiBzdHJva2U9IiNlNWU3ZWIiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2Mzc0OGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7a2V5d29yZH08L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk3YTNiNCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TGlmZSBJbnN1cmFuY2UgR3VpZGU8L3RleHQ+Cjwvc3ZnPg==" alt="${keyword} life insurance guide" class="w-full h-auto rounded-lg shadow-md my-6" />
@@ -338,7 +368,7 @@ serve(async (req) => {
     // Generate article and titles
     console.log(`Generating article from ${summaries.length} summaries...`);
     const [article, titles] = await Promise.all([
-      generateArticle(keyword, summaries, openaiApiKey),
+      generateArticle(keyword, summaries, openaiApiKey, supabaseClient),
       generateTitles(keyword, openaiApiKey)
     ]);
 
