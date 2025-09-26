@@ -61,21 +61,21 @@ const BlogAdmin = () => {
     setIsGenerating(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('ai-blog-generate', {
+      const { data, error } = await supabase.functions.invoke('scheduled-blog-post', {
         body: { keyword: keyword.trim() }
       });
 
       if (error) throw error;
 
-      if (data.success) {
+      if (data) {
         toast({
           title: "Success",
-          description: `Blog post generated for "${keyword}" (${data.wordCount} words)`,
+          description: `Blog post generated for "${keyword}"`,
         });
         setKeyword('');
         await fetchBlogPosts(); // Refresh the list
       } else {
-        throw new Error(data.error || 'Failed to generate blog post');
+        throw new Error('Failed to generate blog post');
       }
     } catch (error) {
       console.error('Error generating blog post:', error);
@@ -203,6 +203,37 @@ const BlogAdmin = () => {
                   onClick={() => setKeyword("Life Insurance for Young Adults: Why You Need Coverage in Your 20s")}
                 >
                   Quick Test: Generate Life Insurance Post
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="secondary"
+                  className="w-full" 
+                  disabled={isGenerating}
+                  onClick={async () => {
+                    setIsGenerating(true);
+                    try {
+                      const { data, error } = await supabase.functions.invoke('scheduled-blog-post', {
+                        body: { test: true, keyword: "Term Life Insurance Benefits" }
+                      });
+                      if (error) throw error;
+                      toast({
+                        title: "Success",
+                        description: "Scheduled blog post generated successfully",
+                      });
+                      await fetchBlogPosts();
+                    } catch (error) {
+                      console.error('Error testing scheduled function:', error);
+                      toast({
+                        title: "Error",
+                        description: "Failed to test scheduled function",
+                        variant: "destructive",
+                      });
+                    } finally {
+                      setIsGenerating(false);
+                    }
+                  }}
+                >
+                  Test Generate Blog Now
                 </Button>
               </div>
             </form>
