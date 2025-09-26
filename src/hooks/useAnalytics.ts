@@ -57,7 +57,7 @@ export const useAnalytics = () => {
   // Track page views
   const trackPageView = useCallback((page_title: string, page_location?: string) => {
     if (window.gtag) {
-      window.gtag('config', 'GA_MEASUREMENT_ID', {
+      window.gtag('config', 'AW-17556221631', {
         page_title,
         page_location: page_location || window.location.href
       });
