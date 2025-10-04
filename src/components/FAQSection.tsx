@@ -5,20 +5,20 @@ const FAQSection = () => {
 
   const faqs = [
     {
-      question: "How much life insurance do I need?",
-      answer: "Most experts recommend 10-12 times your annual income in life insurance coverage. Our licensed agents help calculate your exact needs based on your family situation, debts, and financial goals."
+      question: "How can I review my current life insurance policy?",
+      answer: "Our licensed agents can perform a comprehensive policy review at no cost. We'll analyze your current coverage, premiums, and benefits to ensure your policy still meets your needs and that you're not overpaying."
     },
     {
-      question: "What's the difference between term and whole life insurance?",
-      answer: "Term life provides temporary coverage for a specific period (10-30 years) at lower premiums. Whole life provides permanent coverage with cash value accumulation but higher premiums."
+      question: "What if I'm having trouble with a claim or billing issue?",
+      answer: "We provide dedicated support for policy claims and billing questions. Our licensed professionals can advocate on your behalf with carriers and help resolve coverage, payment, or benefit claim issues."
     },
     {
-      question: "How fast can I get life insurance coverage?",
-      answer: "Many healthy applicants can get approved within 24-48 hours with simplified issue policies. Full underwriting typically takes 2-6 weeks depending on the carrier and coverage amount."
+      question: "Can I upgrade or modify my existing policy?",
+      answer: "Yes! Many policies can be modified or upgraded. We can review your options including increasing coverage, converting term to permanent insurance, or finding better rates. Many upgrades don't require medical exams."
     },
     {
-      question: "Do I need a medical exam for life insurance?",
-      answer: "Not always! We offer no-exam life insurance policies for qualifying applicants. These simplified issue policies can provide coverage up to certain limits without medical exams or lengthy health questionnaires."
+      question: "How do I know if I'm overpaying for my current policy?",
+      answer: "Policy rates vary significantly by carrier and change over time. We offer free policy reviews to compare your current premiums against current market rates and identify potential savings opportunities."
     }
   ];
 
@@ -30,7 +30,7 @@ const FAQSection = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Get answers to common life insurance questions from our licensed professionals
+            Get answers to common policy questions from our licensed professionals
           </p>
         </div>
 
@@ -68,10 +68,10 @@ const FAQSection = () => {
 
           <div className="text-center mt-12 p-8 bg-primary-dark rounded-lg text-white">
             <h3 className="text-2xl font-bold mb-4">
-              Still Have Questions?
+              Need Help With Your Policy?
             </h3>
             <p className="text-lg mb-6 opacity-90">
-              Speak with a licensed agent for personalized advice
+              Speak with a licensed agent for policy support and reviews
             </p>
             <a
               href={`tel:${phoneNumber}`}

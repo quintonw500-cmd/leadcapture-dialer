@@ -74,12 +74,12 @@ const TrustSection = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {[
               {
-                title: "Instant Approval",
-                description: "Most applications processed in 60 seconds"
+                title: "Policy Reviews",
+                description: "Comprehensive analysis of your coverage"
               },
               {
-                title: "No Medical Exam",
-                description: "For coverage up to $500,000"
+                title: "Claims Support",
+                description: "Help with benefit claims process"
               },
               {
                 title: "Licensed Agent",
@@ -87,7 +87,7 @@ const TrustSection = () => {
               },
               {
                 title: "All 50 States",
-                description: "Nationwide coverage available"
+                description: "Nationwide policy support available"
               }
             ].map((benefit, index) => (
               <div key={index} className="text-center">
@@ -113,7 +113,7 @@ const TrustSection = () => {
               </div>
             </a>
             <p className="text-muted-foreground text-sm">
-              Call now for personalized quotes • No pressure, no obligations
+              Call now for policy support • No pressure, no obligations
             </p>
           </div>
         </div>

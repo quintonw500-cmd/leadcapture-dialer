@@ -20,11 +20,11 @@ const Footer = () => {
       <div className="bg-gradient-to-r from-primary-dark to-primary py-12">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Protect Your Family's Future?
+            Need Help With Your Life Insurance Policy?
           </h2>
           <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-            Don't wait - life insurance rates increase with age. 
-            Get your free quote from a licensed professional today.
+            Get expert support for policy reviews, coverage questions, billing issues, and benefit claims. 
+            Speak with a licensed professional today.
           </p>
           
           <a 
@@ -35,7 +35,7 @@ const Footer = () => {
             <Phone className="w-6 h-6" />
             <div className="text-left">
               <div className="font-bold">Call Now: {phoneNumber}</div>
-              <div className="text-sm opacity-80">Free Consultation Available</div>
+              <div className="text-sm opacity-80">Policy Support Available</div>
             </div>
           </a>
           
@@ -55,7 +55,7 @@ const Footer = () => {
                 <img 
                   src={shieldIcon} 
                   alt="US Life Help Shield" 
-                  className="w-8 h-8"
+                  className="w-10 h-10"
                 />
                 <div>
                   <h3 className="font-bold text-lg">US Life Help</h3>

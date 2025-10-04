@@ -66,7 +66,7 @@ const AgentSection = () => {
                     <Phone className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
                     <div className="text-center lg:text-left">
                       <div className="font-bold text-base sm:text-lg">{phoneNumber}</div>
-                      <div className="text-xs sm:text-sm opacity-90">Call for Free Consultation</div>
+                      <div className="text-xs sm:text-sm opacity-90">Call for Policy Support</div>
                     </div>
                   </a>
                   

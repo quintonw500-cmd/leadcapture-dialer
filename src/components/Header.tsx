@@ -24,11 +24,11 @@ const Header = () => {
               <img 
                 src={shieldIcon} 
                 alt="Life Insurance Shield" 
-                className="w-10 h-10"
+                className="w-14 h-14"
               />
               <div>
-                <h1 className="text-xl font-bold text-primary-dark">US Life Help</h1>
-                <p className="text-xs text-muted-foreground">Licensed Insurance Agent</p>
+                <h1 className="text-2xl font-bold text-primary-dark">US Life Help</h1>
+                <p className="text-sm text-muted-foreground">Licensed Insurance Agent</p>
               </div>
             </Link>
             
@@ -38,7 +38,7 @@ const Header = () => {
           
           <div className="hidden md:flex items-center space-x-6">
             <div className="text-right">
-              <p className="text-sm font-medium text-foreground">Call Now for Instant Quote</p>
+              <p className="text-sm font-medium text-foreground">Call for Policy Help</p>
               <p className="text-xs text-muted-foreground">Licensed Professional Available</p>
             </div>
             <a 
