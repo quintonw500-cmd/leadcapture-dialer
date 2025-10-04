@@ -16,18 +16,18 @@
     --popover-foreground: 215 25% 27%;
 
     /* Professional navy blue for trust and authority */
-    --primary: 213 94% 68%;
-    --primary-dark: 213 84% 25%;
+    --primary: 217 91% 60%;
+    --primary-dark: 224 76% 39%;
     --primary-foreground: 0 0% 100%;
 
     /* Clean secondary colors */
     --secondary: 210 17% 95%;
-    --secondary-foreground: 213 84% 25%;
+    --secondary-foreground: 217 33% 17%;
 
     --muted: 210 17% 95%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 213 94% 68%;
+    --accent: 217 91% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -35,15 +35,15 @@
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 213 94% 68%;
+    --ring: 217 91% 60%;
 
-    /* Trust and success colors */
-    --success: 142 76% 36%;
+    /* Trust and success colors - bright green for CTAs */
+    --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
 
     /* Professional gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(213 84% 25%), hsl(213 94% 68%));
-    --gradient-hero: linear-gradient(135deg, hsl(213 84% 25%) 0%, hsl(213 75% 35%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(224 76% 39%), hsl(217 91% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(224 76% 39%) 0%, hsl(217 91% 60%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 17% 98%) 100%);
 
     /* Professional shadows */
@@ -128,7 +128,11 @@
 
 @layer components {
   .btn-call {
-    @apply bg-gradient-to-r from-primary-dark to-primary text-primary-foreground font-bold py-4 px-8 rounded-xl hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105 active:scale-95;
+    @apply bg-gradient-to-r from-primary-dark to-primary text-primary-foreground font-bold py-4 px-8 rounded-xl hover:shadow-[var(--shadow-button)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2;
+  }
+  
+  .btn-call-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .btn-call-outline {

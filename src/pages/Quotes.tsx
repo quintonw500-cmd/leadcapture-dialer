@@ -68,19 +68,19 @@ const Quotes = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b shadow-sm">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b shadow-md">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={shieldIcon} alt="Life Insure Help Services" className="w-10 h-10 md:w-12 md:h-12" />
-            <span className="font-semibold text-base md:text-lg hidden sm:inline">Life Insure Help Services</span>
+            <span className="font-semibold text-lg md:text-xl hidden sm:inline">Life Insure Help Services</span>
           </div>
           <a 
             href="tel:8665957540" 
-            className="btn-call text-sm md:text-base py-2 md:py-3 px-4 md:px-6"
+            className="btn-call btn-call-pulse text-base md:text-lg py-3 md:py-4 px-6 md:px-8"
           >
-            <Phone className="w-4 h-4 md:w-5 md:h-5" />
-            <span className="hidden sm:inline">(866) 595-7540</span>
-            <span className="sm:hidden">Call Now</span>
+            <Phone className="w-5 h-5 md:w-6 md:h-6" />
+            <span className="hidden md:inline font-bold">(866) 595-7540</span>
+            <span className="md:hidden font-bold">Call Now</span>
           </a>
         </div>
       </header>
@@ -96,24 +96,29 @@ const Quotes = () => {
         {/* Pattern Overlay */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L3N2Zz4=')] opacity-40" />
         
-        <div className="relative container mx-auto px-4 py-12 md:py-16 text-center">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-white drop-shadow-lg">
+        <div className="relative container mx-auto px-4 py-16 md:py-20 text-center">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 md:mb-8 text-white drop-shadow-2xl leading-tight">
             Get Your Free Life Insurance Quote in 60 Seconds
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto font-medium">
+          <p className="text-xl md:text-2xl lg:text-3xl text-white/95 max-w-3xl mx-auto font-semibold mb-8 drop-shadow-lg">
             Compare rates from 40+ carriers. No medical exam options available.
           </p>
           
-          {/* Social Proof Stats */}
-          <div className="mt-8 md:mt-12 flex flex-wrap justify-center items-center gap-6 md:gap-12 text-white">
+          {/* Social Proof Stats Badge */}
+          <div className="inline-flex flex-wrap justify-center items-center gap-4 md:gap-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-6 md:px-10 py-4 md:py-5 text-white shadow-2xl">
             <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 md:w-6 md:h-6" />
-              <span className="text-sm md:text-base font-semibold">50,000+ Families Protected</span>
+              <Users className="w-6 h-6 md:w-7 md:h-7" />
+              <span className="text-sm md:text-lg font-bold">50,000+ Families Protected</span>
             </div>
-            <div className="hidden md:block w-px h-6 bg-white/30" />
+            <div className="hidden sm:block w-px h-8 bg-white/30" />
             <div className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5 md:w-6 md:h-6" />
-              <span className="text-sm md:text-base font-semibold">$2.8B in Coverage Provided</span>
+              <DollarSign className="w-6 h-6 md:w-7 md:h-7" />
+              <span className="text-sm md:text-lg font-bold">$2.8B Coverage</span>
+            </div>
+            <div className="hidden sm:block w-px h-8 bg-white/30" />
+            <div className="flex items-center gap-2">
+              <Award className="w-6 h-6 md:w-7 md:h-7" />
+              <span className="text-sm md:text-lg font-bold">A+ Rated Carriers</span>
             </div>
           </div>
         </div>
@@ -121,7 +126,7 @@ const Quotes = () => {
 
       {/* Form Card */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        <Card className="max-w-2xl mx-auto shadow-[var(--shadow-large)] border-2">
+        <Card className="max-w-2xl mx-auto shadow-2xl border-2 border-border/50">
           <CardHeader className="text-center space-y-4 pb-6">
             <div>
               <CardTitle className="text-2xl md:text-3xl text-primary mb-2">Your Free Quote</CardTitle>
@@ -174,10 +179,10 @@ const Quotes = () => {
                 <Button 
                   onClick={nextStep} 
                   disabled={!formData.firstName || !formData.lastName || !formData.phone}
-                  className="w-full h-14 text-lg font-bold shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-large)] transition-all"
+                  className="w-full h-16 text-xl font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
                   size="lg"
                 >
-                  Continue <ArrowRight className="w-5 h-5 ml-2" />
+                  Continue <ArrowRight className="w-6 h-6 ml-2" />
                 </Button>
               </div>
             )}
@@ -220,7 +225,7 @@ const Quotes = () => {
                   <Button 
                     onClick={nextStep} 
                     disabled={!formData.dateOfBirth || !formData.coverage}
-                    className="flex-1 h-14 text-base font-bold shadow-[var(--shadow-button)]"
+                    className="flex-1 h-14 text-lg font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all"
                     size="lg"
                   >
                     Continue <ArrowRight className="w-5 h-5 ml-2" />
@@ -245,16 +250,6 @@ const Quotes = () => {
                   </Select>
                 </div>
 
-                <div className="bg-muted/50 p-4 md:p-5 rounded-lg space-y-2 border border-border">
-                  <div className="flex items-center gap-2 text-sm md:text-base font-medium">
-                    <Lock className="w-5 h-5 text-primary" />
-                    Your information is secure
-                  </div>
-                  <div className="text-xs md:text-sm text-muted-foreground">
-                    We never sell your data. Licensed agents only. TCPA compliant.
-                  </div>
-                </div>
-
                 <div className="flex gap-3">
                   <Button variant="outline" onClick={prevStep} className="flex-1 h-14 text-base" size="lg">
                     <ArrowLeft className="w-5 h-5 mr-2" /> Back
@@ -262,11 +257,21 @@ const Quotes = () => {
                   <Button 
                     onClick={handleSubmit} 
                     disabled={!formData.tobacco}
-                    className="flex-1 h-14 text-base md:text-lg font-bold shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-large)] transition-all"
+                    className="flex-1 h-16 text-xl font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
                     size="lg"
                   >
                     Get My Free Quote
                   </Button>
+                </div>
+
+                <div className="bg-success/10 border border-success/30 p-4 md:p-5 rounded-lg space-y-2 mt-4">
+                  <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-success">
+                    <Lock className="w-5 h-5" />
+                    Your information is secure
+                  </div>
+                  <div className="text-xs md:text-sm text-foreground/80">
+                    We never sell your data. Licensed agents only. TCPA compliant.
+                  </div>
                 </div>
               </div>
             )}
