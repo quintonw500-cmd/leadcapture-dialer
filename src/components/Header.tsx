@@ -58,14 +58,14 @@ const Header = () => {
           <div className="md:hidden">
             <a 
               href={`tel:${phoneNumber}`}
-              className="btn-call flex flex-col items-center gap-1 py-2 px-4"
+              className="btn-call flex flex-col items-center gap-0.5 py-1.5 px-3 text-xs"
               onClick={handlePhoneClick}
             >
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                <span className="font-bold text-xs">Speak to an Agent Now</span>
+              <div className="flex items-center gap-1">
+                <Phone className="w-3 h-3" />
+                <span className="font-semibold">Call Now</span>
               </div>
-              <span className="font-bold text-xs">{phoneNumber}</span>
+              <span className="font-semibold">{phoneNumber}</span>
             </a>
           </div>
         </div>
