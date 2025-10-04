@@ -70,9 +70,9 @@ const Quotes = () => {
       {/* Sticky Header */}
       <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b shadow-md">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={shieldIcon} alt="Life Insure Help Services" className="w-10 h-10 md:w-12 md:h-12" />
-            <span className="font-semibold text-lg md:text-xl hidden sm:inline">Life Insure Help Services</span>
+          <div className="flex items-center gap-2 md:gap-3">
+            <img src={shieldIcon} alt="Life Insure Help Services" className="w-8 h-8 md:w-12 md:h-12" />
+            <span className="font-semibold text-sm md:text-xl">Life Insure Help Services</span>
           </div>
           <a 
             href="tel:8665957540" 
@@ -89,35 +89,38 @@ const Quotes = () => {
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary/80 to-primary">
         {/* Background Image with Overlay */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+          className="absolute inset-0 bg-cover bg-center opacity-20 animate-pulse"
           style={{ backgroundImage: `url(${heroImage})` }}
         />
         
         {/* Pattern Overlay */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNCIvPjwvZz48L3N2Zz4=')] opacity-40" />
         
+        {/* Animated Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent shimmer" />
+        
         <div className="relative container mx-auto px-4 py-16 md:py-20 text-center">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 md:mb-8 text-white drop-shadow-2xl leading-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 md:mb-8 text-white drop-shadow-2xl leading-tight animate-fade-in">
             Get Your Free Life Insurance Quote in 60 Seconds
           </h1>
-          <p className="text-xl md:text-2xl lg:text-3xl text-white/95 max-w-3xl mx-auto font-semibold mb-8 drop-shadow-lg">
+          <p className="text-xl md:text-2xl lg:text-3xl text-white/95 max-w-3xl mx-auto font-semibold mb-8 drop-shadow-lg animate-fade-in" style={{ animationDelay: '0.1s' }}>
             Compare rates from 40+ carriers. No medical exam options available.
           </p>
           
           {/* Social Proof Stats Badge */}
-          <div className="inline-flex flex-wrap justify-center items-center gap-4 md:gap-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-6 md:px-10 py-4 md:py-5 text-white shadow-2xl">
+          <div className="inline-flex flex-wrap justify-center items-center gap-4 md:gap-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-6 md:px-10 py-4 md:py-5 text-white shadow-2xl hover:bg-white/15 transition-all duration-300 hover:scale-105 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <div className="flex items-center gap-2">
-              <Users className="w-6 h-6 md:w-7 md:h-7" />
+              <Users className="w-6 h-6 md:w-7 md:h-7 animate-float" />
               <span className="text-sm md:text-lg font-bold">50,000+ Families Protected</span>
             </div>
             <div className="hidden sm:block w-px h-8 bg-white/30" />
             <div className="flex items-center gap-2">
-              <DollarSign className="w-6 h-6 md:w-7 md:h-7" />
+              <DollarSign className="w-6 h-6 md:w-7 md:h-7 animate-float" style={{ animationDelay: '0.3s' }} />
               <span className="text-sm md:text-lg font-bold">$2.8B Coverage</span>
             </div>
             <div className="hidden sm:block w-px h-8 bg-white/30" />
             <div className="flex items-center gap-2">
-              <Award className="w-6 h-6 md:w-7 md:h-7" />
+              <Award className="w-6 h-6 md:w-7 md:h-7 animate-float" style={{ animationDelay: '0.6s' }} />
               <span className="text-sm md:text-lg font-bold">A+ Rated Carriers</span>
             </div>
           </div>
@@ -126,7 +129,7 @@ const Quotes = () => {
 
       {/* Form Card */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        <Card className="max-w-2xl mx-auto shadow-2xl border-2 border-border/50">
+        <Card className="max-w-2xl mx-auto shadow-2xl border-2 border-border/50 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300">
           <CardHeader className="text-center space-y-4 pb-6">
             <div>
               <CardTitle className="text-2xl md:text-3xl text-primary mb-2">Your Free Quote</CardTitle>
@@ -287,33 +290,33 @@ const Quotes = () => {
         {/* Trust Badges Section */}
         <div className="max-w-4xl mx-auto mt-12 md:mt-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <div className="trust-badge text-center">
+            <div className="trust-badge text-center group hover:scale-105 transition-transform duration-300">
               <div className="flex justify-center mb-3">
-                <Clock className="w-10 h-10 md:w-12 md:h-12 text-success" />
+                <Clock className="w-10 h-10 md:w-12 md:h-12 text-success group-hover:animate-pulse" />
               </div>
               <h3 className="font-semibold text-sm md:text-base mb-1">Licensed Agents</h3>
               <p className="text-xs md:text-sm text-muted-foreground">Available 7 days/week</p>
             </div>
             
-            <div className="trust-badge text-center">
+            <div className="trust-badge text-center group hover:scale-105 transition-transform duration-300">
               <div className="flex justify-center mb-3">
-                <Shield className="w-10 h-10 md:w-12 md:h-12 text-success" />
+                <Shield className="w-10 h-10 md:w-12 md:h-12 text-success group-hover:animate-pulse" />
               </div>
               <h3 className="font-semibold text-sm md:text-base mb-1">No Obligation</h3>
               <p className="text-xs md:text-sm text-muted-foreground">100% free quotes</p>
             </div>
             
-            <div className="trust-badge text-center">
+            <div className="trust-badge text-center group hover:scale-105 transition-transform duration-300">
               <div className="flex justify-center mb-3">
-                <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-success" />
+                <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-success group-hover:animate-pulse" />
               </div>
               <h3 className="font-semibold text-sm md:text-base mb-1">Fast Approval</h3>
               <p className="text-xs md:text-sm text-muted-foreground">Same-day available</p>
             </div>
             
-            <div className="trust-badge text-center">
+            <div className="trust-badge text-center group hover:scale-105 transition-transform duration-300">
               <div className="flex justify-center mb-3">
-                <Award className="w-10 h-10 md:w-12 md:h-12 text-success" />
+                <Award className="w-10 h-10 md:w-12 md:h-12 text-success group-hover:animate-pulse" />
               </div>
               <h3 className="font-semibold text-sm md:text-base mb-1">Top Carriers</h3>
               <p className="text-xs md:text-sm text-muted-foreground">Compare 40+ options</p>
