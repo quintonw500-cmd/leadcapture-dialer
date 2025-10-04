@@ -100,11 +100,11 @@ const Footer = () => {
                 
                 <div className="pt-3 space-y-1">
                   <a 
-                    href="/blog" 
+                    href="/quotes" 
                     className="block text-primary hover:text-white transition-colors"
-                    onClick={handleNavClick('/blog', 'footer_resources')}
+                    onClick={handleNavClick('/quotes', 'footer_resources')}
                   >
-                    Blog
+                    Get a Quote
                   </a>
                   <a 
                     href="/privacy-policy" 
@@ -119,27 +119,6 @@ const Footer = () => {
                     onClick={handleNavClick('/terms-of-service', 'footer_resources')}
                   >
                     Terms of Service
-                  </a>
-                  <a 
-                    href="/auth" 
-                    className="block text-primary hover:text-white transition-colors"
-                    onClick={handleNavClick('/auth', 'footer_resources')}
-                  >
-                    Admin Login
-                  </a>
-                  <a 
-                    href="/blog-scheduler" 
-                    className="block text-primary hover:text-white transition-colors"
-                    onClick={handleNavClick('/blog-scheduler', 'footer_resources')}
-                  >
-                    Blog Scheduler
-                  </a>
-                  <a 
-                    href="/seo-analytics" 
-                    className="block text-primary hover:text-white transition-colors"
-                    onClick={handleNavClick('/seo-analytics', 'footer_resources')}
-                  >
-                    SEO Analytics
                   </a>
                 </div>
               </div>
@@ -158,8 +137,8 @@ const Footer = () => {
             </div>
             
             <nav className="mb-4">
-              <a href="/blog" className="text-primary hover:text-white mx-2 transition-colors" onClick={handleNavClick('/blog', 'footer_bottom')}>
-                Blog
+              <a href="/quotes" className="text-primary hover:text-white mx-2 transition-colors" onClick={handleNavClick('/quotes', 'footer_bottom')}>
+                Get a Quote
               </a>
               |
               <a href="/privacy-policy" className="text-primary hover:text-white mx-2 transition-colors">
