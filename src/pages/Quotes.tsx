@@ -76,13 +76,10 @@ const Quotes = () => {
           </div>
           <a 
             href="tel:8665957540" 
-            className="btn-call btn-call-pulse flex flex-col items-center gap-1 text-base md:text-lg py-3 md:py-4 px-6 md:px-8"
+            className="btn-call btn-call-pulse flex items-center gap-2 py-2 px-4 md:py-3 md:px-5"
           >
-            <div className="flex items-center gap-2">
-              <Phone className="w-5 h-5 md:w-6 md:h-6" />
-              <span className="font-bold text-sm md:text-base">Speak to an Agent Now</span>
-            </div>
-            <span className="font-bold text-xs md:text-sm">(866) 595-7540</span>
+            <Phone className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="font-bold text-sm md:text-base">(866) 595-7540</span>
           </a>
         </div>
       </header>
@@ -334,17 +331,46 @@ const Quotes = () => {
           </div>
         </div>
 
-        {/* Social Proof Testimonial */}
-        <div className="max-w-2xl mx-auto mt-8 md:mt-10 bg-card border border-border rounded-lg p-6 shadow-md">
-          <div className="flex gap-1 mb-3 justify-center">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="text-yellow-500 text-xl">⭐</span>
-            ))}
+        {/* Social Proof Reviews Section */}
+        <div className="max-w-4xl mx-auto mt-8 md:mt-10">
+          <h3 className="text-xl md:text-2xl font-bold text-center mb-6 text-foreground">Join Thousands of Protected Families</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="bg-card border border-border rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex gap-1 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-500 text-base">⭐</span>
+                ))}
+              </div>
+              <p className="text-sm text-foreground italic mb-3">
+                "Applied for $500K in coverage and got approved the same day. The whole process took less than 15 minutes."
+              </p>
+              <p className="text-xs text-muted-foreground font-medium">– Marcus T., FL</p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex gap-1 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-500 text-base">⭐</span>
+                ))}
+              </div>
+              <p className="text-sm text-foreground italic mb-3">
+                "Finally got my family protected. $250K coverage for less than $40/month—way more affordable than I thought."
+              </p>
+              <p className="text-xs text-muted-foreground font-medium">– Jennifer R., OH</p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex gap-1 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-500 text-base">⭐</span>
+                ))}
+              </div>
+              <p className="text-sm text-foreground italic mb-3">
+                "Got approved instantly with no medical exam. Couldn't believe how simple it was at my age."
+              </p>
+              <p className="text-xs text-muted-foreground font-medium">– Patricia K., MI</p>
+            </div>
           </div>
-          <p className="text-base md:text-lg text-center italic text-foreground mb-3">
-            "Got coverage for my family in under 10 minutes. Saved $83/month compared to my old policy."
-          </p>
-          <p className="text-sm text-center text-muted-foreground font-semibold">– Sarah M., Detroit</p>
         </div>
 
         {/* Trust Badges Section */}
