@@ -76,11 +76,13 @@ const Quotes = () => {
           </div>
           <a 
             href="tel:8665957540" 
-            className="btn-call btn-call-pulse text-base md:text-lg py-3 md:py-4 px-6 md:px-8"
+            className="btn-call btn-call-pulse flex flex-col items-center gap-1 text-base md:text-lg py-3 md:py-4 px-6 md:px-8"
           >
-            <Phone className="w-5 h-5 md:w-6 md:h-6" />
-            <span className="hidden md:inline font-bold">(866) 595-7540</span>
-            <span className="md:hidden font-bold">Call Now</span>
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5 md:w-6 md:h-6" />
+              <span className="font-bold text-sm md:text-base">Speak to an Agent Now</span>
+            </div>
+            <span className="font-bold text-xs md:text-sm">(866) 595-7540</span>
           </a>
         </div>
       </header>
@@ -187,6 +189,11 @@ const Quotes = () => {
                 >
                   Continue <ArrowRight className="w-6 h-6 ml-2" />
                 </Button>
+                
+                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
+                  <Lock className="w-4 h-4" />
+                  <span>256-bit SSL Encrypted | Your info is never sold</span>
+                </div>
               </div>
             )}
 
@@ -234,6 +241,11 @@ const Quotes = () => {
                     Continue <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
+                
+                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
+                  <Lock className="w-4 h-4" />
+                  <span>256-bit SSL Encrypted | Your info is never sold</span>
+                </div>
               </div>
             )}
 
@@ -266,6 +278,11 @@ const Quotes = () => {
                     Get My Free Quote
                   </Button>
                 </div>
+                
+                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
+                  <Lock className="w-4 h-4" />
+                  <span>256-bit SSL Encrypted | Your info is never sold</span>
+                </div>
 
                 <div className="bg-success/10 border border-success/30 p-4 md:p-5 rounded-lg space-y-2 mt-4">
                   <div className="flex items-center gap-2 text-sm md:text-base font-semibold text-success">
@@ -287,8 +304,51 @@ const Quotes = () => {
           </CardContent>
         </Card>
 
+        {/* What Happens Next Section */}
+        <div className="max-w-2xl mx-auto mt-8 md:mt-10">
+          <h3 className="text-xl md:text-2xl font-bold text-center mb-6 text-foreground">What Happens Next</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="flex flex-col items-center text-center p-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                <span className="text-2xl font-bold text-primary">1</span>
+              </div>
+              <h4 className="font-semibold text-base mb-2">Submit Your Info</h4>
+              <p className="text-sm text-muted-foreground">Quick 60-second form</p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center p-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                <span className="text-2xl font-bold text-primary">2</span>
+              </div>
+              <h4 className="font-semibold text-base mb-2">Agent Calls You</h4>
+              <p className="text-sm text-muted-foreground">Within 5 minutes</p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center p-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                <span className="text-2xl font-bold text-primary">3</span>
+              </div>
+              <h4 className="font-semibold text-base mb-2">Get Your Quote</h4>
+              <p className="text-sm text-muted-foreground">Compare rates instantly</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Social Proof Testimonial */}
+        <div className="max-w-2xl mx-auto mt-8 md:mt-10 bg-card border border-border rounded-lg p-6 shadow-md">
+          <div className="flex gap-1 mb-3 justify-center">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className="text-yellow-500 text-xl">⭐</span>
+            ))}
+          </div>
+          <p className="text-base md:text-lg text-center italic text-foreground mb-3">
+            "Got coverage for my family in under 10 minutes. Saved $83/month compared to my old policy."
+          </p>
+          <p className="text-sm text-center text-muted-foreground font-semibold">– Sarah M., Detroit</p>
+        </div>
+
         {/* Trust Badges Section */}
-        <div className="max-w-4xl mx-auto mt-12 md:mt-16">
+        <div className="max-w-4xl mx-auto mt-8 md:mt-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div className="trust-badge text-center group hover:scale-105 transition-transform duration-300">
               <div className="flex justify-center mb-3">
