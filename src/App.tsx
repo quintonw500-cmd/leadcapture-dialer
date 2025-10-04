@@ -15,6 +15,8 @@ import BlogScheduler from "./pages/BlogScheduler";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import SEOAnalytics from "./components/SEOAnalytics";
+import Quotes from "./pages/Quotes";
+import QuotesThankYou from "./pages/QuotesThankYou";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/quotes" element={<Quotes />} />
+            <Route path="/quotes/thank-you" element={<QuotesThankYou />} />
             <Route path="/auth" element={<Auth />} />
             <Route 
               path="/blog-admin" 
