@@ -27,26 +27,25 @@ const HeroSection = () => {
               </div>
               
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Secure Your Family's 
-                <span className="block text-primary">Financial Future</span>
+                Life Insurance Policy
+                <span className="block text-primary">Help & Support</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-white/90 font-medium">
-                Life Insurance Coverage Starting at $1 Per Day
+                Licensed independent agents ready to assist with your coverage questions, policy reviews, and benefit claims.
               </p>
               
               <p className="text-lg text-white/80 max-w-md">
-                Licensed independent agent offering comprehensive life insurance solutions. 
-                Get instant quotes with no medical exam required for most applicants.
+                Licensed independent agents specializing in life insurance policy support. Get help with policy reviews, coverage questions, billing issues, and benefit claims. No medical exam options available for policy upgrades.
               </p>
             </div>
 
             {/* Benefits */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { icon: CheckCircle, text: "Instant Approval Available" },
-                { icon: Clock, text: "No Medical Exam Required" },
-                { icon: Shield, text: "Licensed Professional" },
+                { icon: CheckCircle, text: "Instant Policy Review Available" },
+                { icon: Shield, text: "Licensed Insurance Professionals" },
+                { icon: Clock, text: "No Medical Exam Options Available" },
                 { icon: Users, text: "All 50 States Coverage" }
               ].map((benefit, index) => (
                 <div key={index} className="flex items-center space-x-3">
@@ -68,7 +67,7 @@ const HeroSection = () => {
                 <Phone className="w-6 h-6" />
                 <div className="text-left">
                   <div className="font-bold">Call Now: {phoneNumber}</div>
-                  <div className="text-sm opacity-90">Get Your Free Quote Today</div>
+                  <div className="text-sm opacity-90">Speak With a Licensed Agent</div>
                 </div>
               </a>
               
@@ -77,8 +76,7 @@ const HeroSection = () => {
               </p>
               
               <p className="text-white/80 text-sm font-medium bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                ⚠️ <strong>IMPORTANT:</strong> Life insurance rates increase significantly with age. 
-                Secure your current rate today before it's too late.
+                ⚠️ <strong>IMPORTANT:</strong> Review your current policy regularly. Many policyholders are overpaying or have coverage that doesn't meet their needs. Get a free policy review today.
               </p>
             </div>
           </div>
