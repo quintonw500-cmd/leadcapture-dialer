@@ -43,11 +43,14 @@ const Header = () => {
             </div>
             <a 
               href={`tel:${phoneNumber}`}
-              className="btn-call flex items-center space-x-2"
+              className="btn-call flex flex-col items-center gap-1 py-3 px-6"
               onClick={handlePhoneClick}
             >
-              <Phone className="w-5 h-5" />
-              <span>{phoneNumber}</span>
+              <div className="flex items-center gap-2">
+                <Phone className="w-5 h-5" />
+                <span className="font-bold text-sm">Speak to an Agent Now</span>
+              </div>
+              <span className="font-bold text-xs">{phoneNumber}</span>
             </a>
           </div>
 
@@ -55,11 +58,14 @@ const Header = () => {
           <div className="md:hidden">
             <a 
               href={`tel:${phoneNumber}`}
-              className="btn-call flex items-center space-x-2 text-sm px-4 py-2"
+              className="btn-call flex flex-col items-center gap-1 py-2 px-4"
               onClick={handlePhoneClick}
             >
-              <Phone className="w-4 h-4" />
-              <span>Call Now</span>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4" />
+                <span className="font-bold text-xs">Speak to an Agent Now</span>
+              </div>
+              <span className="font-bold text-xs">{phoneNumber}</span>
             </a>
           </div>
         </div>

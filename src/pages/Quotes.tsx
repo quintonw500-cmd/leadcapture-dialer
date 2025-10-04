@@ -76,10 +76,13 @@ const Quotes = () => {
           </div>
           <a 
             href="tel:8665957540" 
-            className="btn-call btn-call-pulse flex items-center gap-2 py-2 px-4 md:py-3 md:px-5"
+            className="btn-call btn-call-pulse flex flex-col items-center gap-1 py-3 px-6"
           >
-            <Phone className="w-4 h-4 md:w-5 md:h-5" />
-            <span className="font-bold text-sm md:text-base">(866) 595-7540</span>
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5" />
+              <span className="font-bold text-sm md:text-base">Speak to an Agent Now</span>
+            </div>
+            <span className="font-bold text-xs md:text-sm">(866) 595-7540</span>
           </a>
         </div>
       </header>
