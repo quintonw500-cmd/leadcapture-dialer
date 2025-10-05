@@ -22,6 +22,7 @@ interface FormData {
 
 const Quotes = () => {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -53,35 +54,51 @@ const Quotes = () => {
   };
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
+    console.log("=== STARTING FORM SUBMISSION ===");
+    console.log("Form data:", formData);
+    
     try {
-      console.log("Submitting form:", formData);
+      const url = "https://pkekpnescchcguienvmy.supabase.co/functions/v1/submit-quote";
+      console.log("Calling edge function at:", url);
       
-      const response = await fetch(
-        "https://pkekpnescchcguienvmy.supabase.co/functions/v1/submit-quote",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("Response status:", response.status);
+      console.log("Response ok:", response.ok);
+
+      const responseText = await response.text();
+      console.log("Response body:", responseText);
 
       if (!response.ok) {
-        throw new Error("Failed to submit quote");
+        throw new Error(`Failed to submit quote: ${response.status} - ${responseText}`);
       }
 
-      const result = await response.json();
+      const result = JSON.parse(responseText);
       console.log("Quote submitted successfully:", result);
+      
+      toast({
+        title: "Success!",
+        description: "Your quote request has been submitted.",
+      });
       
       navigate("/quotes/thank-you");
     } catch (error) {
-      console.error("Error submitting quote:", error);
+      console.error("=== ERROR SUBMITTING QUOTE ===");
+      console.error("Error details:", error);
       toast({
         title: "Error",
-        description: "Something went wrong. Please try again.",
+        description: error instanceof Error ? error.message : "Something went wrong. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -291,11 +308,11 @@ const Quotes = () => {
                   </Button>
                   <Button 
                     onClick={handleSubmit} 
-                    disabled={!formData.tobacco}
+                    disabled={!formData.tobacco || isSubmitting}
                     className="flex-1 h-16 text-xl font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
                     size="lg"
                   >
-                    Get My Free Quote
+                    {isSubmitting ? "Submitting..." : "Get My Free Quote"}
                   </Button>
                 </div>
                 
