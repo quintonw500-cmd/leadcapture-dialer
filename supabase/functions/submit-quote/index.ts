@@ -97,7 +97,7 @@ const handler = async (req: Request): Promise<Response> => {
             "Content-Type": "application/x-www-form-urlencoded",
           },
           body: new URLSearchParams({
-            To: "+13604020092",
+            To: "+18107061575",
             From: twilioPhoneNumber,
             Body: smsMessage,
           }),
