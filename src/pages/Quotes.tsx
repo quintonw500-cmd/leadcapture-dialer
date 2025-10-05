@@ -54,9 +54,29 @@ const Quotes = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log("Form submitted:", formData);
+      console.log("Submitting form:", formData);
+      
+      const response = await fetch(
+        "https://pkekpnescchcguienvmy.supabase.co/functions/v1/submit-quote",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit quote");
+      }
+
+      const result = await response.json();
+      console.log("Quote submitted successfully:", result);
+      
       navigate("/quotes/thank-you");
     } catch (error) {
+      console.error("Error submitting quote:", error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
