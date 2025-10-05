@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Shield, Lock, Phone, CheckCircle, Users, DollarSign, Clock, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import shieldIcon from "@/assets/shield-icon.png";
+import familyLogo from "@/assets/family-logo.png";
 import heroImage from "@/assets/hero-family-new.jpg";
 
 interface FormData {
@@ -108,8 +108,8 @@ const Quotes = () => {
       <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b shadow-md">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3">
-            <img src={shieldIcon} alt="Life Insure Help Services" className="w-8 h-8 md:w-12 md:h-12" />
-            <span className="font-semibold text-sm md:text-xl">Life Insure Help Services</span>
+            <img src={familyLogo} alt="Family First Coverage" className="h-10 w-10 md:h-[60px] md:w-[60px] object-contain" />
+            <span className="font-bold text-sm md:text-xl" style={{ color: '#1e3a5f' }}>Family First Coverage</span>
           </div>
           <a 
             href="tel:8665957540" 
