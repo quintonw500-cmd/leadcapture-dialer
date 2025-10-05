@@ -12,24 +12,30 @@ import familyLogo from "@/assets/family-logo.png";
 import heroImage from "@/assets/hero-family-new.jpg";
 
 interface FormData {
+  dateOfBirth: string;
+  gender: string;
+  state: string;
+  tobacco: string;
+  coverage: string;
   firstName: string;
   lastName: string;
   phone: string;
-  dateOfBirth: string;
-  coverage: string;
-  tobacco: string;
+  email: string;
 }
 
 const Quotes = () => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
+    dateOfBirth: "",
+    gender: "",
+    state: "",
+    tobacco: "",
+    coverage: "",
     firstName: "",
     lastName: "",
     phone: "",
-    dateOfBirth: "",
-    coverage: "",
-    tobacco: ""
+    email: ""
   });
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -178,8 +184,190 @@ const Quotes = () => {
           </CardHeader>
 
           <CardContent className="space-y-6 px-4 md:px-6">
-            {/* Step 1: Personal Info */}
+            {/* Step 1: Date of Birth, Gender, State */}
             {step === 1 && (
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="dateOfBirth" className="text-base">Date of Birth *</Label>
+                  <Input
+                    id="dateOfBirth"
+                    type="date"
+                    value={formData.dateOfBirth}
+                    onChange={(e) => updateFormData("dateOfBirth", e.target.value)}
+                    required
+                    className="h-12 text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="gender" className="text-base">Gender *</Label>
+                  <Select value={formData.gender} onValueChange={(value) => updateFormData("gender", value)}>
+                    <SelectTrigger className="h-12 text-base">
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background z-50">
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="state" className="text-base">State *</Label>
+                  <Select value={formData.state} onValueChange={(value) => updateFormData("state", value)}>
+                    <SelectTrigger className="h-12 text-base">
+                      <SelectValue placeholder="Select your state" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background z-50 max-h-[300px]">
+                      <SelectItem value="AL">Alabama</SelectItem>
+                      <SelectItem value="AK">Alaska</SelectItem>
+                      <SelectItem value="AZ">Arizona</SelectItem>
+                      <SelectItem value="AR">Arkansas</SelectItem>
+                      <SelectItem value="CA">California</SelectItem>
+                      <SelectItem value="CO">Colorado</SelectItem>
+                      <SelectItem value="CT">Connecticut</SelectItem>
+                      <SelectItem value="DE">Delaware</SelectItem>
+                      <SelectItem value="FL">Florida</SelectItem>
+                      <SelectItem value="GA">Georgia</SelectItem>
+                      <SelectItem value="HI">Hawaii</SelectItem>
+                      <SelectItem value="ID">Idaho</SelectItem>
+                      <SelectItem value="IL">Illinois</SelectItem>
+                      <SelectItem value="IN">Indiana</SelectItem>
+                      <SelectItem value="IA">Iowa</SelectItem>
+                      <SelectItem value="KS">Kansas</SelectItem>
+                      <SelectItem value="KY">Kentucky</SelectItem>
+                      <SelectItem value="LA">Louisiana</SelectItem>
+                      <SelectItem value="ME">Maine</SelectItem>
+                      <SelectItem value="MD">Maryland</SelectItem>
+                      <SelectItem value="MA">Massachusetts</SelectItem>
+                      <SelectItem value="MI">Michigan</SelectItem>
+                      <SelectItem value="MN">Minnesota</SelectItem>
+                      <SelectItem value="MS">Mississippi</SelectItem>
+                      <SelectItem value="MO">Missouri</SelectItem>
+                      <SelectItem value="MT">Montana</SelectItem>
+                      <SelectItem value="NE">Nebraska</SelectItem>
+                      <SelectItem value="NV">Nevada</SelectItem>
+                      <SelectItem value="NH">New Hampshire</SelectItem>
+                      <SelectItem value="NJ">New Jersey</SelectItem>
+                      <SelectItem value="NM">New Mexico</SelectItem>
+                      <SelectItem value="NY">New York</SelectItem>
+                      <SelectItem value="NC">North Carolina</SelectItem>
+                      <SelectItem value="ND">North Dakota</SelectItem>
+                      <SelectItem value="OH">Ohio</SelectItem>
+                      <SelectItem value="OK">Oklahoma</SelectItem>
+                      <SelectItem value="OR">Oregon</SelectItem>
+                      <SelectItem value="PA">Pennsylvania</SelectItem>
+                      <SelectItem value="RI">Rhode Island</SelectItem>
+                      <SelectItem value="SC">South Carolina</SelectItem>
+                      <SelectItem value="SD">South Dakota</SelectItem>
+                      <SelectItem value="TN">Tennessee</SelectItem>
+                      <SelectItem value="TX">Texas</SelectItem>
+                      <SelectItem value="UT">Utah</SelectItem>
+                      <SelectItem value="VT">Vermont</SelectItem>
+                      <SelectItem value="VA">Virginia</SelectItem>
+                      <SelectItem value="WA">Washington</SelectItem>
+                      <SelectItem value="WV">West Virginia</SelectItem>
+                      <SelectItem value="WI">Wisconsin</SelectItem>
+                      <SelectItem value="WY">Wyoming</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Button 
+                  onClick={nextStep} 
+                  disabled={!formData.dateOfBirth || !formData.gender || !formData.state}
+                  className="w-full h-16 text-xl font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+                  size="lg"
+                >
+                  Continue <ArrowRight className="w-6 h-6 ml-2" />
+                </Button>
+                
+                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
+                  <Lock className="w-4 h-4" />
+                  <span>256-bit SSL Encrypted | Your info is never sold</span>
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Tobacco & Coverage */}
+            {step === 2 && (
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="tobacco" className="text-base">Do you use tobacco or nicotine? *</Label>
+                  <Select value={formData.tobacco} onValueChange={(value) => updateFormData("tobacco", value)}>
+                    <SelectTrigger className="h-12 text-base">
+                      <SelectValue placeholder="Select option" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background z-50">
+                      <SelectItem value="no">No, I don't smoke</SelectItem>
+                      <SelectItem value="yes">Yes, I do smoke</SelectItem>
+                      <SelectItem value="quit">I quit smoking</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-base">How much coverage do you need? *</Label>
+                  <div className="space-y-2">
+                    {[
+                      { value: "10000", label: "$10,000 (Final Expense)" },
+                      { value: "15000", label: "$15,000 (Final Expense)" },
+                      { value: "25000", label: "$25,000 (Final Expense)" },
+                      { value: "40000", label: "$40,000 (Whole Life)" },
+                      { value: "100000", label: "$100,000 (Term/IUL)" },
+                      { value: "250000", label: "$250,000 (Term/IUL)" },
+                      { value: "500000", label: "$500,000 (Term/IUL)" }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => updateFormData("coverage", option.value)}
+                        className={`w-full text-left px-4 py-3 rounded-md border-2 transition-all ${
+                          formData.coverage === option.value
+                            ? "border-primary bg-primary/5 font-semibold"
+                            : "border-border hover:border-primary/50 hover:bg-muted/50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                            formData.coverage === option.value
+                              ? "border-primary bg-primary"
+                              : "border-muted-foreground"
+                          }`}>
+                            {formData.coverage === option.value && (
+                              <CheckCircle className="w-4 h-4 text-primary-foreground" />
+                            )}
+                          </div>
+                          <span className="text-base">{option.label}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button variant="outline" onClick={prevStep} className="flex-1 h-14 text-base" size="lg">
+                    <ArrowLeft className="w-5 h-5 mr-2" /> Back
+                  </Button>
+                  <Button 
+                    onClick={nextStep} 
+                    disabled={!formData.tobacco || !formData.coverage}
+                    className="flex-1 h-14 text-lg font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all"
+                    size="lg"
+                  >
+                    Continue <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </div>
+                
+                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
+                  <Lock className="w-4 h-4" />
+                  <span>256-bit SSL Encrypted | Your info is never sold</span>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Contact Information */}
+            {step === 3 && (
               <div className="space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-base">First Name *</Label>
@@ -218,88 +406,16 @@ const Quotes = () => {
                   />
                 </div>
 
-                <Button 
-                  onClick={nextStep} 
-                  disabled={!formData.firstName || !formData.lastName || !formData.phone}
-                  className="w-full h-16 text-xl font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
-                  size="lg"
-                >
-                  Continue <ArrowRight className="w-6 h-6 ml-2" />
-                </Button>
-                
-                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
-                  <Lock className="w-4 h-4" />
-                  <span>256-bit SSL Encrypted | Your info is never sold</span>
-                </div>
-              </div>
-            )}
-
-            {/* Step 2: Coverage Details */}
-            {step === 2 && (
-              <div className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="dateOfBirth" className="text-base">Date of Birth *</Label>
+                  <Label htmlFor="email" className="text-base">Email (Optional)</Label>
                   <Input
-                    id="dateOfBirth"
-                    type="date"
-                    value={formData.dateOfBirth}
-                    onChange={(e) => updateFormData("dateOfBirth", e.target.value)}
-                    required
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => updateFormData("email", e.target.value)}
+                    placeholder="your.email@example.com"
                     className="h-12 text-base"
                   />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="coverage" className="text-base">Coverage Amount Needed *</Label>
-                  <Select value={formData.coverage} onValueChange={(value) => updateFormData("coverage", value)}>
-                    <SelectTrigger className="h-12 text-base">
-                      <SelectValue placeholder="Select coverage amount" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="5000">$5,000</SelectItem>
-                      <SelectItem value="10000">$10,000</SelectItem>
-                      <SelectItem value="25000">$25,000</SelectItem>
-                      <SelectItem value="50000">$50,000</SelectItem>
-                      <SelectItem value="100000">$100,000+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex gap-3">
-                  <Button variant="outline" onClick={prevStep} className="flex-1 h-14 text-base" size="lg">
-                    <ArrowLeft className="w-5 h-5 mr-2" /> Back
-                  </Button>
-                  <Button 
-                    onClick={nextStep} 
-                    disabled={!formData.dateOfBirth || !formData.coverage}
-                    className="flex-1 h-14 text-lg font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all"
-                    size="lg"
-                  >
-                    Continue <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </div>
-                
-                <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-muted-foreground mt-3">
-                  <Lock className="w-4 h-4" />
-                  <span>256-bit SSL Encrypted | Your info is never sold</span>
-                </div>
-              </div>
-            )}
-
-            {/* Step 3: Tobacco Status */}
-            {step === 3 && (
-              <div className="space-y-5">
-                <div className="space-y-2">
-                  <Label htmlFor="tobacco" className="text-base">Do you use tobacco or nicotine? *</Label>
-                  <Select value={formData.tobacco} onValueChange={(value) => updateFormData("tobacco", value)}>
-                    <SelectTrigger className="h-12 text-base">
-                      <SelectValue placeholder="Select tobacco/nicotine use" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="no">No</SelectItem>
-                      <SelectItem value="yes">Yes</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 <div className="flex gap-3">
@@ -308,7 +424,7 @@ const Quotes = () => {
                   </Button>
                   <Button 
                     onClick={handleSubmit} 
-                    disabled={!formData.tobacco || isSubmitting}
+                    disabled={!formData.firstName || !formData.lastName || !formData.phone || isSubmitting}
                     className="flex-1 h-14 text-base font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] overflow-hidden"
                     size="lg"
                   >
