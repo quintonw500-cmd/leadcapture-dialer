@@ -80,6 +80,42 @@ export type Database = {
         }
         Relationships: []
       }
+      quote_requests: {
+        Row: {
+          coverage: string
+          created_at: string
+          date_of_birth: string
+          first_name: string
+          id: string
+          last_name: string
+          phone: string
+          status: string
+          tobacco: string
+        }
+        Insert: {
+          coverage: string
+          created_at?: string
+          date_of_birth: string
+          first_name: string
+          id?: string
+          last_name: string
+          phone: string
+          status?: string
+          tobacco: string
+        }
+        Update: {
+          coverage?: string
+          created_at?: string
+          date_of_birth?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string
+          status?: string
+          tobacco?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
