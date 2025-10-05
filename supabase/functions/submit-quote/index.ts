@@ -83,12 +83,22 @@ const handler = async (req: Request): Promise<Response> => {
     const twilioAuthToken = Deno.env.get("TWILIO_AUTH_TOKEN");
     const twilioPhoneNumber = Deno.env.get("TWILIO_PHONE_NUMBER");
     
+    console.log("Twilio configuration check:", {
+      hasAccountSid: !!twilioAccountSid,
+      hasAuthToken: !!twilioAuthToken,
+      hasPhoneNumber: !!twilioPhoneNumber,
+      accountSidLength: twilioAccountSid?.length,
+      fromNumber: twilioPhoneNumber,
+    });
+    
     if (twilioAccountSid && twilioAuthToken && twilioPhoneNumber) {
       try {
-        const smsMessage = `New quote request from ${firstName} ${lastName}. Phone: ${phone}, Coverage: $${coverage}`;
+        const smsMessage = `New quote: ${firstName} ${lastName}, Phone: ${phone}, Coverage: $${coverage}, DOB: ${dateOfBirth}, Tobacco: ${tobacco}`;
         
         const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/Messages.json`;
         const credentials = encode(`${twilioAccountSid}:${twilioAuthToken}`);
+        
+        console.log("Attempting to send SMS to +18107061575");
         
         const smsResponse = await fetch(twilioUrl, {
           method: "POST",
@@ -103,16 +113,26 @@ const handler = async (req: Request): Promise<Response> => {
           }),
         });
 
+        const smsResult = await smsResponse.text();
+        console.log("SMS Response Status:", smsResponse.status);
+        console.log("SMS Response Body:", smsResult);
+
         if (smsResponse.ok) {
-          console.log("SMS sent successfully");
+          console.log("✅ SMS sent successfully to +18107061575");
         } else {
-          const errorText = await smsResponse.text();
-          console.error("Failed to send SMS:", errorText);
+          console.error("❌ Failed to send SMS. Status:", smsResponse.status);
+          console.error("Error details:", smsResult);
         }
       } catch (smsError) {
-        console.error("Error sending SMS:", smsError);
-        // Don't throw - we still want to return success even if SMS fails
+        console.error("❌ SMS Error:", smsError);
+        console.error("Error message:", smsError instanceof Error ? smsError.message : String(smsError));
       }
+    } else {
+      console.error("❌ Missing Twilio credentials:", {
+        hasAccountSid: !!twilioAccountSid,
+        hasAuthToken: !!twilioAuthToken,
+        hasPhoneNumber: !!twilioPhoneNumber,
+      });
     }
 
     return new Response(
