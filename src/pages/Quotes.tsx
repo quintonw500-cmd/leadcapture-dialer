@@ -113,13 +113,13 @@ const Quotes = () => {
           </div>
           <a 
             href="tel:8665957540" 
-            className="btn-call btn-call-pulse flex flex-col items-center gap-1 py-3 px-6"
+            className="btn-call btn-call-pulse flex flex-col items-center gap-0.5 py-2 px-4 max-w-[200px]"
           >
-            <div className="flex items-center gap-2">
-              <Phone className="w-5 h-5" />
-              <span className="font-bold text-sm md:text-base">Speak to an Agent Now</span>
+            <div className="flex items-center gap-1.5">
+              <Phone className="w-4 h-4" />
+              <span className="font-bold text-sm whitespace-nowrap">Speak to an Agent Now</span>
             </div>
-            <span className="font-bold text-xs md:text-sm">(866) 595-7540</span>
+            <span className="font-bold text-base">(866) 595-7540</span>
           </a>
         </div>
       </header>
@@ -168,7 +168,7 @@ const Quotes = () => {
 
       {/* Form Card */}
       <section className="container mx-auto px-4 py-8 md:py-12">
-        <Card className="max-w-2xl mx-auto shadow-2xl border-2 border-border/50 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300">
+        <Card className="max-w-2xl mx-auto shadow-2xl border-2 border-border/50 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300 overflow-hidden">
           <CardHeader className="text-center space-y-4 pb-6">
             <div>
               <CardTitle className="text-2xl md:text-3xl text-primary mb-2">Your Free Quote</CardTitle>
@@ -177,7 +177,7 @@ const Quotes = () => {
             <Progress value={progress} className="w-full h-3" />
           </CardHeader>
 
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 px-4 md:px-6">
             {/* Step 1: Personal Info */}
             {step === 1 && (
               <div className="space-y-5">
@@ -303,16 +303,16 @@ const Quotes = () => {
                 </div>
 
                 <div className="flex gap-3">
-                  <Button variant="outline" onClick={prevStep} className="flex-1 h-14 text-base" size="lg">
+                  <Button variant="outline" onClick={prevStep} className="flex-1 h-14 text-base max-w-[140px]" size="lg">
                     <ArrowLeft className="w-5 h-5 mr-2" /> Back
                   </Button>
                   <Button 
                     onClick={handleSubmit} 
                     disabled={!formData.tobacco || isSubmitting}
-                    className="flex-1 h-16 text-xl font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+                    className="flex-1 h-14 text-base font-extrabold bg-success hover:bg-success/90 text-success-foreground shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] overflow-hidden"
                     size="lg"
                   >
-                    {isSubmitting ? "Submitting..." : "Get My Free Quote"}
+                    {isSubmitting ? "Submitting..." : "Get My Free Quote →"}
                   </Button>
                 </div>
                 
