@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { Resend } from "npm:resend@4.0.0";
+import { encode } from "https://deno.land/std@0.190.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -76,6 +77,43 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("Email sent successfully:", emailResponse);
+
+    // Send SMS notification via Twilio
+    const twilioAccountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
+    const twilioAuthToken = Deno.env.get("TWILIO_AUTH_TOKEN");
+    const twilioPhoneNumber = Deno.env.get("TWILIO_PHONE_NUMBER");
+    
+    if (twilioAccountSid && twilioAuthToken && twilioPhoneNumber) {
+      try {
+        const smsMessage = `New quote request from ${firstName} ${lastName}. Phone: ${phone}, Coverage: $${coverage}`;
+        
+        const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/Messages.json`;
+        const credentials = encode(`${twilioAccountSid}:${twilioAuthToken}`);
+        
+        const smsResponse = await fetch(twilioUrl, {
+          method: "POST",
+          headers: {
+            "Authorization": `Basic ${credentials}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            To: "+13604020092",
+            From: twilioPhoneNumber,
+            Body: smsMessage,
+          }),
+        });
+
+        if (smsResponse.ok) {
+          console.log("SMS sent successfully");
+        } else {
+          const errorText = await smsResponse.text();
+          console.error("Failed to send SMS:", errorText);
+        }
+      } catch (smsError) {
+        console.error("Error sending SMS:", smsError);
+        // Don't throw - we still want to return success even if SMS fails
+      }
+    }
 
     return new Response(
       JSON.stringify({ 
