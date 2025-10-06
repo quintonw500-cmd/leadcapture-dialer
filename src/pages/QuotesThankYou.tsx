@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import shieldIcon from "@/assets/shield-icon.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import RateCalculator from "@/components/RateCalculator";
 
 const QuotesThankYou = () => {
   const navigate = useNavigate();
@@ -100,6 +101,11 @@ const QuotesThankYou = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Rate Calculator */}
+        <div className="mt-12">
+          <RateCalculator />
+        </div>
 
         {/* Trust Badges */}
         <div className="max-w-4xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
