@@ -1,11 +1,23 @@
-import { CheckCircle2, Phone } from "lucide-react";
+import { CheckCircle2, Phone, Shield, Award, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import shieldIcon from "@/assets/shield-icon.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const QuotesThankYou = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Google Ads conversion tracking
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'conversion', {
+        'send_to': 'AW-17556221631/j_gPCJeb8qcbEL_durNB',
+        'value': 50.0,
+        'currency': 'USD'
+      });
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -41,7 +53,10 @@ const QuotesThankYou = () => {
 
           <CardContent className="space-y-6">
             <p className="text-lg text-muted-foreground">
-              A licensed agent will call you within 5 minutes to provide your personalized quote.
+              Your quote request has been received.
+            </p>
+            <p className="text-lg font-semibold text-foreground">
+              A licensed agent will contact you within 5 minutes at the phone number you provided.
             </p>
 
             <div className="bg-muted/50 p-6 rounded-lg space-y-4">
@@ -85,6 +100,25 @@ const QuotesThankYou = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Trust Badges */}
+        <div className="max-w-4xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="text-center p-6 border-primary/20">
+            <Shield className="w-12 h-12 mx-auto mb-3 text-primary" />
+            <h3 className="font-semibold mb-2">Licensed & Insured</h3>
+            <p className="text-sm text-muted-foreground">Fully licensed agents in all 50 states</p>
+          </Card>
+          <Card className="text-center p-6 border-primary/20">
+            <Award className="w-12 h-12 mx-auto mb-3 text-primary" />
+            <h3 className="font-semibold mb-2">40+ Carriers</h3>
+            <p className="text-sm text-muted-foreground">We compare rates to find you the best deal</p>
+          </Card>
+          <Card className="text-center p-6 border-primary/20">
+            <Lock className="w-12 h-12 mx-auto mb-3 text-primary" />
+            <h3 className="font-semibold mb-2">Secure & Private</h3>
+            <p className="text-sm text-muted-foreground">Your information is always protected</p>
+          </Card>
+        </div>
       </section>
     </div>
   );
